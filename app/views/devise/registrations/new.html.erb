@@ -21,6 +21,13 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
+  <% if current_user&.admin? %>
+    <div class="field">
+      <%= f.label :role %><br />
+      <%= f.select :role, User.roles.keys.except("admin"), {}, { class: "select" } %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
