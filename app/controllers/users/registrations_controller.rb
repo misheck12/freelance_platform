@@ -14,8 +14,16 @@ class Users::RegistrationsController < Devise::RegistrationsController
         render :new_freelancer
       end
     end
-  
+
     protected
+
+    def require_no_authentication
+      if current_user && !current_user.admin?
+        flash[:alert] = "You are already signed in."
+        redirect_to root_path
+      end
+      # Do not call the parent implementation, to avoid the redirection
+    end
   
     def configure_sign_up_params
       devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :password, :password_confirmation])
