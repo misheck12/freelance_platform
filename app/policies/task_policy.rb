@@ -1,8 +1,21 @@
 class TaskPolicy < ApplicationPolicy
-  class Scope < Scope
-    # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+  class Scope
+    attr_reader :user, :scope
+  
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+  
+    def resolve
+      if user.admin?
+        scope.all
+      elsif user.freelancer?
+        scope.where(freelancer: user)
+      else
+        scope.where(client: user)
+      end
+    end
   end
+  
 end
