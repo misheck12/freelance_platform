@@ -13,31 +13,13 @@
           Total Clients: <span class="badge bg-success"><%= User.client.count %></span><br>
           Total Freelancers: <span class="badge bg-info"><%= User.freelancer.count %></span>
         </p>
+        <!-- Admin Features -->
+        <div class="mb-3">
+          <%= link_to 'Manage Users', '#', class: "btn btn-primary" %>
+          <%= link_to 'Manage All Tasks', '#', class: "btn btn-secondary" %>
+          <%= link_to 'Manage Reviews', '#', class: "btn btn-warning" %>
+        </div>
       </div>
-    </div>
-
-    <div class="mb-4">
-      <h3>All Tasks</h3>
-      <ul class="list-group">
-        <% Task.all.each do |task| %>
-          <li class="list-group-item">
-            <%= link_to task.title, task_path(task) %> - 
-            <span class="badge bg-secondary">Status: <%= task.status %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-
-    <div>
-      <h3>All Reviews</h3>
-      <ul class="list-group">
-        <% Review.all.each do |review| %>
-          <li class="list-group-item">
-            Review for <%= link_to review.task.title, task_path(review.task) %>: 
-            <span class="badge bg-warning text-dark"><%= review.rating %> stars</span> - <%= review.comment %>
-          </li>
-        <% end %>
-      </ul>
     </div>
 
   <% elsif current_user.client? %>
@@ -47,30 +29,13 @@
         Client Dashboard
       </div>
       <div class="card-body">
-        <%= link_to 'Create New Task', new_task_path, class: "btn btn-primary mb-3" %>
-        
-        <h3>Your Tasks</h3>
-        <ul class="list-group">
-          <% current_user.tasks_as_client.each do |task| %>
-            <li class="list-group-item">
-              <%= link_to task.title, task_path(task) %> - 
-              <span class="badge bg-secondary">Status: <%= task.status %></span>
-            </li>
-          <% end %>
-        </ul>
+        <!-- Client Features -->
+        <div class="mb-3">
+          <%= link_to 'Create New Task', new_task_path, class: "btn btn-primary" %>
+          <%= link_to 'Your Tasks', '#', class: "btn btn-secondary" %>
+          <%= link_to 'Your Reviews', '#', class: "btn btn-warning" %>
+        </div>
       </div>
-    </div>
-
-    <div>
-      <h3>Your Reviews</h3>
-      <ul class="list-group">
-        <% current_user.reviews.each do |review| %>
-          <li class="list-group-item">
-            Review for <%= link_to review.task.title, task_path(review.task) %>: 
-            <span class="badge bg-warning text-dark"><%= review.rating %> stars</span> - <%= review.comment %>
-          </li>
-        <% end %>
-      </ul>
     </div>
 
   <% elsif current_user.freelancer? %>
@@ -80,34 +45,13 @@
         Freelancer Dashboard
       </div>
       <div class="card-body">
-        <h3>Available Tasks</h3>
-        <ul class="list-group">
-          <% Task.open_tasks.each do |task| %>
-            <li class="list-group-item"><%= link_to task.title, task_path(task) %></li>
-          <% end %>
-        </ul>
+        <!-- Freelancer Features -->
+        <div class="mb-3">
+          <%= link_to 'Available Tasks', '#', class: "btn btn-primary" %>
+          <%= link_to 'Your Tasks', '#', class: "btn btn-secondary" %>
+          <%= link_to 'Your Reviews', '#', class: "btn btn-warning" %>
+        </div>
       </div>
-    </div>
-
-    <div class="mb-4">
-      <h3>Tasks You're Working On</h3>
-      <ul class="list-group">
-        <% current_user.tasks_as_freelancer.each do |task| %>
-          <li class="list-group-item"><%= link_to task.title, task_path(task) %></li>
-        <% end %>
-      </ul>
-    </div>
-
-    <div>
-      <h3>Your Reviews</h3>
-      <ul class="list-group">
-        <% current_user.reviews.each do |review| %>
-          <li class="list-group-item">
-            Review for <%= link_to review.task.title, task_path(review.task) %>: 
-            <span class="badge bg-warning text-dark"><%= review.rating %> stars</span> - <%= review.comment %>
-          </li>
-        <% end %>
-      </ul>
     </div>
   <% end %>
 </div>
