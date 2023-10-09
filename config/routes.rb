@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   # Custom routes for freelancer registration by admin
   get 'users/new_freelancer', to: 'users/registrations#new_freelancer', as: :new_freelancer_registration
   post 'users/create_freelancer', to: 'users/registrations#create_freelancer', as: :create_freelancer_registration
+  delete 'users/:id', to: 'users/registrations#destroy', as: :admin_destroy_user
+
 
   # Devise routes
   devise_for :users, controllers: { registrations: 'users/registrations' }

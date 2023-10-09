@@ -15,6 +15,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
       end
     end
 
+    def destroy
+      resource.destroy
+      set_flash_message! :notice, :destroyed
+      respond_with_navigational(resource){ redirect_to dashboard_path } # Redirect to admin dashboard after deletion
+    end
+    
+
     protected
 
     def require_no_authentication
