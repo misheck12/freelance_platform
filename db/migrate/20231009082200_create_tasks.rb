@@ -6,8 +6,8 @@ class CreateTasks < ActiveRecord::Migration[7.0]
       t.decimal :budget
       t.datetime :deadline
       t.integer :status
-      t.references :client, null: false, foreign_key: true
-      t.references :freelancer, null: false, foreign_key: true
+      t.references :client, foreign_key: { to_table: :users }
+      t.references :freelancer, foreign_key: { to_table: :users }
 
       t.timestamps
     end
