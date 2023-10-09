@@ -9,6 +9,9 @@ validates :description, presence: true, length: { minimum: 10 }
 validates :budget, presence: true, numericality: { greater_than: 0 }
 validates :deadline, presence: true
 
+scope :open_tasks, -> { where(status: 'open') }
+
+
 
          has_many :tasks_as_client, class_name: 'Task', foreign_key: 'client_id'
          has_many :tasks_as_freelancer, class_name: 'Task', foreign_key: 'freelancer_id'
