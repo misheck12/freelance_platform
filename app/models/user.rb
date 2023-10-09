@@ -1,22 +1,17 @@
-class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+class Task < ApplicationRecord
+  # Validations
+  validates :title, presence: true, length: { minimum: 5, maximum: 100 }
+  validates :description, presence: true, length: { minimum: 10 }
+  validates :budget, presence: true, numericality: { greater_than: 0 }
+  validates :deadline, presence: true
 
-validates :title, presence: true, length: { minimum: 5, maximum: 100 }
-validates :description, presence: true, length: { minimum: 10 }
-validates :budget, presence: true, numericality: { greater_than: 0 }
-validates :deadline, presence: true
+  # Enum for status
+  enum status: { open: 0, in_progress: 1, under_review: 2, completed: 3 }
 
-scope :open_tasks, -> { where(status: 'open') }
+  # Scopes
+  scope :open_tasks, -> { where(status: 'open') }
 
-
-
-         has_many :tasks_as_client, class_name: 'Task', foreign_key: 'client_id'
-         has_many :tasks_as_freelancer, class_name: 'Task', foreign_key: 'freelancer_id'
-         
-
-         enum role: { admin: 0, client: 1, freelancer: 2 }
-
+  # Associations
+  belongs_to :client, class_name: 'User'
+  belongs_to :freelancer, class_name: 'User', optional: true
 end
