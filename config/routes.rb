@@ -7,6 +7,9 @@ Rails.application.routes.draw do
 
   # Devise routes
   devise_for :users, controllers: { registrations: 'users/registrations' }
+
+  # Route for destroying users
+  resources :users, only: [:destroy]
     
   resources :tasks
   resources :reviews, only: [:show, :new, :create, :edit, :update, :destroy]
