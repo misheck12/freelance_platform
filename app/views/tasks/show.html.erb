@@ -1,0 +1,11 @@
+<h1><%= @task.title %></h1>
+
+<p>
+  Description: <%= @task.description %><br>
+  Budget: <%= @task.budget %><br>
+  Deadline: <%= @task.deadline %><br>
+  Status: <%= @task.status %>
+</p>
+
+<%= link_to 'Edit', edit_task_path(@task) %> |
+<%= link_to 'Back', tasks_path %>
