@@ -24,7 +24,7 @@
   <% if current_user&.admin? %>
     <div class="field">
       <%= f.label :role %><br />
-      <%= f.select :role, User.roles.keys.except("admin"), {}, { class: "select" } %>
+      <%= f.select :role, User.roles.keys - ["admin"], {}, { class: "select" } %>
     </div>
   <% end %>
 
