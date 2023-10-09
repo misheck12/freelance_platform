@@ -1,2 +1,54 @@
-<h1>Dashboard#show</h1>
-<p>Find me in app/views/dashboard/show.html.erb</p>
+<h1>Welcome, <%= current_user.name %>!</h1>
+
+<% if current_user.admin? %>
+  <!-- Admin Dashboard Content -->
+  <h2>Admin Dashboard</h2>
+  <p>
+    Total Tasks: <%= Task.count %><br>
+    Total Clients: <%= User.client.count %><br>
+    Total Freelancers: <%= User.freelancer.count %>
+  </p>
+  <h3>Recent Tasks</h3>
+  <ul>
+    <% Task.last(5).each do |task| %>
+      <li><%= link_to task.title, task_path(task) %></li>
+    <% end %>
+  </ul>
+  <!-- Add a link to manage users if needed -->
+
+<% elsif current_user.client? %>
+  <!-- Client Dashboard Content -->
+  <h2>Client Dashboard</h2>
+  <%= link_to 'Create New Task', new_task_path %>
+  <h3>Your Tasks</h3>
+  <ul>
+    <% current_user.tasks_as_client.each do |task| %>
+      <li>
+        <%= link_to task.title, task_path(task) %> - 
+        <span>Status: <%= task.status %></span>
+      </li>
+    <% end %>
+  </ul>
+  <h3>Tasks You've Reviewed</h3>
+  <ul>
+    <% current_user.reviews.each do |review| %>
+      <li><%= link_to review.task.title, task_path(review.task) %></li>
+    <% end %>
+  </ul>
+
+<% elsif current_user.freelancer? %>
+  <!-- Freelancer Dashboard Content -->
+  <h2>Freelancer Dashboard</h2>
+  <h3>Available Tasks</h3>
+  <ul>
+    <% Task.open_tasks.each do |task| %>
+      <li><%= link_to task.title, task_path(task) %></li>
+    <% end %>
+  </ul>
+  <h3>Tasks You're Working On</h3>
+  <ul>
+    <% current_user.tasks_as_freelancer.each do |task| %>
+      <li><%= link_to task.title, task_path(task) %></li>
+    <% end %>
+  </ul>
+<% end %>
