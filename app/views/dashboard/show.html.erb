@@ -3,54 +3,118 @@
 
   <% if current_user.admin? %>
     <!-- Admin Dashboard Content -->
-    <div class="card mb-4">
-      <div class="card-header">
-        Admin Dashboard
-      </div>
-      <div class="card-body">
-        <p>
-          Total Tasks: <span class="badge bg-primary"><%= Task.count %></span><br>
-          Total Clients: <span class="badge bg-success"><%= User.client.count %></span><br>
-          Total Freelancers: <span class="badge bg-info"><%= User.freelancer.count %></span>
-        </p>
-        <!-- Admin Features -->
-        <div class="mb-3">
-          <%= link_to 'Manage Users', '#', class: "btn btn-primary" %>
-          <%= link_to 'Manage All Tasks', '#', class: "btn btn-secondary" %>
-          <%= link_to 'Manage Reviews', '#', class: "btn btn-warning" %>
+    <div class="row">
+      <!-- Statistics Cards -->
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Total Tasks</h5>
+            <p class="card-text"><%= Task.count %></p>
+          </div>
         </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Total Clients</h5>
+            <p class="card-text"><%= User.client.count %></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Total Freelancers</h5>
+            <p class="card-text"><%= User.freelancer.count %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lists -->
+    <div class="mb-4">
+      <h3>All Tasks</h3>
+      <div class="list-group">
+        <% Task.all.each do |task| %>
+          <a href="<%= task_path(task) %>" class="list-group-item list-group-item-action">
+            <%= task.title %> - <span class="badge bg-secondary">Status: <%= task.status %></span>
+          </a>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <h3>All Reviews</h3>
+      <div class="list-group">
+        <% Review.all.each do |review| %>
+          <a href="<%= task_path(review.task) %>" class="list-group-item list-group-item-action">
+            Review for <%= review.task.title %>: <span class="badge bg-warning text-dark"><%= review.rating %> stars</span> - <%= review.comment %>
+          </a>
+        <% end %>
       </div>
     </div>
 
   <% elsif current_user.client? %>
     <!-- Client Dashboard Content -->
-    <div class="card mb-4">
-      <div class="card-header">
-        Client Dashboard
+    <div class="mb-4">
+      <h2>Client Dashboard</h2>
+      <%= link_to 'Create New Task', new_task_path, class: "btn btn-primary mb-3" %>
+      
+      <h3>Your Tasks</h3>
+      <div class="list-group">
+        <% current_user.tasks_as_client.each do |task| %>
+          <a href="<%= task_path(task) %>" class="list-group-item list-group-item-action">
+            <%= task.title %> - <span class="badge bg-secondary">Status: <%= task.status %></span>
+          </a>
+        <% end %>
       </div>
-      <div class="card-body">
-        <!-- Client Features -->
-        <div class="mb-3">
-          <%= link_to 'Create New Task', new_task_path, class: "btn btn-primary" %>
-          <%= link_to 'Your Tasks', '#', class: "btn btn-secondary" %>
-          <%= link_to 'Your Reviews', '#', class: "btn btn-warning" %>
-        </div>
+    </div>
+
+    <div>
+      <h3>Your Reviews</h3>
+      <div class="list-group">
+        <% current_user.reviews.each do |review| %>
+          <a href="<%= task_path(review.task) %>" class="list-group-item list-group-item-action">
+            Review for <%= review.task.title %>: <span class="badge bg-warning text-dark"><%= review.rating %> stars</span> - <%= review.comment %>
+          </a>
+        <% end %>
       </div>
     </div>
 
   <% elsif current_user.freelancer? %>
     <!-- Freelancer Dashboard Content -->
-    <div class="card mb-4">
-      <div class="card-header">
-        Freelancer Dashboard
+    <div class="mb-4">
+      <h2>Freelancer Dashboard</h2>
+      
+      <h3>Available Tasks</h3>
+      <div class="list-group">
+        <% Task.open_tasks.each do |task| %>
+          <a href="<%= task_path(task) %>" class="list-group-item list-group-item-action">
+            <%= task.title %>
+          </a>
+        <% end %>
       </div>
-      <div class="card-body">
-        <!-- Freelancer Features -->
-        <div class="mb-3">
-          <%= link_to 'Available Tasks', '#', class: "btn btn-primary" %>
-          <%= link_to 'Your Tasks', '#', class: "btn btn-secondary" %>
-          <%= link_to 'Your Reviews', '#', class: "btn btn-warning" %>
-        </div>
+    </div>
+
+    <div class="mb-4">
+      <h3>Tasks You're Working On</h3>
+      <div class="list-group">
+        <% current_user.tasks_as_freelancer.each do |task| %>
+          <a href="<%= task_path(task) %>" class="list-group-item list-group-item-action">
+            <%= task.title %>
+          </a>
+        <% end %>
+      </div>
+    </div>
+
+    <div>
+      <h3>Your Reviews</h3>
+      <div class="list-group">
+        <% current_user.reviews.each do |review| %>
+          <a href="<%= task_path(review.task) %>" class="list-group-item list-group-item-action">
+            Review for <%= review.task.title %>: <span class="badge bg-warning text-dark"><%= review.rating %> stars</span> - <%= review.comment %>
+          </a>
+        <% end %>
       </div>
     </div>
   <% end %>
