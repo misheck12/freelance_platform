@@ -8,18 +8,32 @@
     Total Clients: <%= User.client.count %><br>
     Total Freelancers: <%= User.freelancer.count %>
   </p>
-  <h3>Recent Tasks</h3>
+  
+  <h3>All Tasks</h3>
   <ul>
-    <% Task.last(5).each do |task| %>
-      <li><%= link_to task.title, task_path(task) %></li>
+    <% Task.all.each do |task| %>
+      <li>
+        <%= link_to task.title, task_path(task) %> - 
+        <span>Status: <%= task.status %></span>
+      </li>
     <% end %>
   </ul>
-  <!-- Add a link to manage users if needed -->
+  
+  <h3>All Reviews</h3>
+  <ul>
+    <% Review.all.each do |review| %>
+      <li>
+        Review for <%= link_to review.task.title, task_path(review.task) %>: 
+        <%= review.rating %> stars - <%= review.comment %>
+      </li>
+    <% end %>
+  </ul>
 
 <% elsif current_user.client? %>
   <!-- Client Dashboard Content -->
   <h2>Client Dashboard</h2>
   <%= link_to 'Create New Task', new_task_path %>
+  
   <h3>Your Tasks</h3>
   <ul>
     <% current_user.tasks_as_client.each do |task| %>
@@ -29,26 +43,42 @@
       </li>
     <% end %>
   </ul>
-  <h3>Tasks You've Reviewed</h3>
+  
+  <h3>Your Reviews</h3>
   <ul>
     <% current_user.reviews.each do |review| %>
-      <li><%= link_to review.task.title, task_path(review.task) %></li>
+      <li>
+        Review for <%= link_to review.task.title, task_path(review.task) %>: 
+        <%= review.rating %> stars - <%= review.comment %>
+      </li>
     <% end %>
   </ul>
 
 <% elsif current_user.freelancer? %>
   <!-- Freelancer Dashboard Content -->
   <h2>Freelancer Dashboard</h2>
+  
   <h3>Available Tasks</h3>
   <ul>
     <% Task.open_tasks.each do |task| %>
       <li><%= link_to task.title, task_path(task) %></li>
     <% end %>
   </ul>
+  
   <h3>Tasks You're Working On</h3>
   <ul>
     <% current_user.tasks_as_freelancer.each do |task| %>
       <li><%= link_to task.title, task_path(task) %></li>
+    <% end %>
+  </ul>
+  
+  <h3>Your Reviews</h3>
+  <ul>
+    <% current_user.reviews.each do |review| %>
+      <li>
+        Review for <%= link_to review.task.title, task_path(review.task) %>: 
+        <%= review.rating %> stars - <%= review.comment %>
+      </li>
     <% end %>
   </ul>
 <% end %>
