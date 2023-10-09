@@ -14,4 +14,6 @@ class Task < ApplicationRecord
   # Associations
   belongs_to :client, class_name: 'User'
   belongs_to :freelancer, class_name: 'User', optional: true
+  has_one :review
+
 end
