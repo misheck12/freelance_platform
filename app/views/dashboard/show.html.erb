@@ -49,29 +49,29 @@
     </div>
 
     <div class="mt-5">
-  <h4>Manage Users</h4>
-  <table class="table table-bordered table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% User.all.each do |user| %>
-        <tr>
-          <td><%= user.email %></td>
-          <td><%= user.role.capitalize %></td>
-          <td>
-          <%= link_to 'Delete', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+      <h4>Manage Users</h4>
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% User.all.each do |user| %>
+            <tr>
+              <td><%= user.email %></td>
+              <td><%= user.role.capitalize %></td>
+              <td>
+                <%= link_to 'Delete', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
       <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-primary' %>
-</div>
+    </div>
 
   <% elsif current_user.client? %>
     <!-- Client Dashboard Content -->
@@ -100,11 +100,15 @@
       </div>
       <div class="card-body">
         <ul class="list-group">
-          <% current_user.reviews.each do |review| %>
-            <li class="list-group-item list-group-item-light">
-              Review for <%= link_to review.task.title, task_path(review.task) %>: 
-              <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
-            </li>
+          <% if current_user&.respond_to?(:reviews) && current_user.reviews.any? %>
+            <% current_user.reviews.each do |review| %>
+              <li class="list-group-item list-group-item-light">
+                Review for <%= link_to review.task.title, task_path(review.task) %>: 
+                <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
+              </li>
+            <% end %>
+          <% else %>
+            <p>No reviews available.</p>
           <% end %>
         </ul>
       </div>
@@ -132,7 +136,7 @@
       <div class="card-header bg-secondary text-white">
         Tasks You're Working On
       </div>
-      <div class="card-body">
+      <div the "card-body">
         <ul class="list-group">
           <% current_user.tasks_as_freelancer.each do |task| %>
             <li class="list-group-item list-group-item-light">
@@ -149,11 +153,15 @@
       </div>
       <div class="card-body">
         <ul class="list-group">
-          <% current_user.reviews.each do |review| %>
-            <li class="list-group-item list-group-item-light">
-              Review for <%= link_to review.task.title, task_path(review.task) %>: 
-              <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
-            </li>
+          <% if current_user&.respond_to?(:reviews) && current_user.reviews.any? %>
+            <% current_user.reviews.each do |review| %>
+              <li class="list-group-item list-group-item-light">
+                Review for <%= link_to review.task.title, task_path(review.task) %>: 
+                <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
+              </li>
+            <% end %>
+          <% else %>
+            <p>No reviews available.</p>
           <% end %>
         </ul>
       </div>
