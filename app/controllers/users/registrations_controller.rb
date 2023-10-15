@@ -1,47 +1,57 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-    before_action :configure_sign_up_params, only: [:create]
-    before_action :ensure_admin, only: [:new_freelancer, :create_freelancer]
-  
-    def new_freelancer
-      @user = User.new
-    end
-  
-    def create_freelancer
-      @user = User.new(sign_up_params.merge(role: :freelancer))
-      if @user.save
-        redirect_to root_path, notice: 'Freelancer was successfully created.'
+  before_action :configure_sign_up_params, only: [:create]
+  before_action :ensure_admin, only: [:new_freelancer, :create_freelancer]
+
+  # GET /users/sign_up
+  def new
+    super  # This calls Devise's default new method
+  end
+
+  # POST /users
+  def create
+    super  # This calls Devise's default create method
+  end
+
+  # GET /users/new_freelancer
+  def new_freelancer
+    build_resource({})
+    respond_with self.resource
+  end
+
+  # POST /users/create_freelancer
+  def create_freelancer
+    build_resource(sign_up_params.merge(role: :freelancer))
+
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      if resource.active_for_authentication?
+        set_flash_message! :notice, :signed_up
+        sign_up(resource_name, resource)
+        respond_with resource, location: after_sign_up_path_for(resource)
       else
-        render :new_freelancer
+        set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
-    end
-
-    def destroy
-      resource.destroy
-      set_flash_message! :notice, :destroyed
-      respond_with_navigational(resource){ redirect_to dashboard_path } # Redirect to admin dashboard after deletion
-    end
-    
-
-    protected
-
-    def require_no_authentication
-      if current_user && !current_user.admin?
-        flash[:alert] = "You are already signed in."
-        redirect_to root_path
-      end
-      # Do not call the parent implementation, to avoid the redirection
-    end
-  
-    def configure_sign_up_params
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :password, :password_confirmation, :role])
-    end    
-  
-    private
-  
-    def ensure_admin
-      unless current_user&.admin?
-        redirect_to root_path, alert: 'You are not authorized to perform this action.'
-      end
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
     end
   end
-  
+
+  protected
+
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :password, :password_confirmation])
+  end
+
+  private
+
+  def ensure_admin
+    unless current_user&.admin?
+      redirect_to root_path, alert: 'You are not authorized to perform this action.'
+    end
+  end
+end
