@@ -1,4 +1,4 @@
-<h2><%= current_user&.admin? ? "Create User" : "Sign up" %></h2>
+<h2><%= "Sign Up" %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
@@ -21,18 +21,9 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div>
 
-  <% if current_user&.admin? %>
-    <div class="field">
-      <%= f.label :role %><br />
-      <%= f.select :role, User.roles.keys - ["client"], {}, { class: "select" } %>
-    </div>
-  <% end %>
-
   <div class="actions">
-    <%= f.submit current_user&.admin? ? "Create User" : "Sign up" %>
+    <%= f.submit "Sign Up" %>
   </div>
 <% end %>
 
-<% unless current_user&.admin? %>
-  <%= render "devise/shared/links" %>
-<% end %>
+<%= render "devise/shared/links" %>
