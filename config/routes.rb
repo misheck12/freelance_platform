@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'dashboard#show'
+
   get 'dashboard/show'
 
   # Devise routes with custom controllers
