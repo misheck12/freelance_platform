@@ -14,12 +14,15 @@ class TasksController < ApplicationController
   
     def create
       @task = Task.new(task_params)
+      @task.client = current_user  # Set the client to the current user
+    
       if @task.save
         redirect_to @task, notice: 'Task was successfully created.'
       else
         render :new
       end
     end
+    
   
     def edit
     end
