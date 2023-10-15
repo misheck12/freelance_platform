@@ -16,16 +16,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
     def destroy
-      # Find the user
-      user = User.find(params[:id])
-  
-      # Check if the current user is an admin and the user to delete is not an admin
-      if current_user.admin? && !user.admin?
-        user.destroy
-        redirect_to some_path, notice: 'User was successfully deleted.'
-      else
-        redirect_to some_path, alert: 'You cannot delete this user.'
-      end
+      resource.destroy
+      set_flash_message! :notice, :destroyed
+      respond_with_navigational(resource){ redirect_to dashboard_path } # Redirect to admin dashboard after deletion
     end
     
 
