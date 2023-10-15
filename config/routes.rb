@@ -19,6 +19,11 @@ Rails.application.routes.draw do
 
   get 'dashboard', to: 'dashboard#show', as: 'dashboard'
 
+    # Devise routes
+    devise_scope :user do
+      get '/users/sign_out' => 'devise/sessions#destroy'
+    end
+
   # It seems you have this route for user deletion, but it might conflict with Devise's own routes.
   # If you have a custom method for user deletion outside of Devise, consider renaming the route/path.
   # resources :users, only: [:destroy] # Consider commenting out or removing this line if it's not used elsewhere.
