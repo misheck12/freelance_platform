@@ -1,6 +1,7 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
-import "controllers"
-import * as bootstrap from "bootstrap"
+import "controllers" // if you have Stimulus controllers you want to import
+import * as Bootstrap from "bootstrap"
 import Rails from "@rails/ujs"
+
 Rails.start()
+
