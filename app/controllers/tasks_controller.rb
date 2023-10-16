@@ -34,6 +34,18 @@ class TasksController < ApplicationController
         render :edit
       end
     end
+
+    def accept
+      @task = Task.find(params[:id])
+      if current_user.freelancer? && @task.open?
+        @task.update(freelancer: current_user, status: :in_progress)
+        # redirect to show page with a success message
+        redirect_to @task, notice: 'Task has been accepted!'
+      else
+        # redirect to show page with an error message
+        redirect_to @task, alert: 'You cannot accept this task!'
+      end
+    end
   
     def destroy
       @task.destroy
