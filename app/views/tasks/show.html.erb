@@ -10,7 +10,10 @@
 <% if current_user == @task.client %>
   <%= link_to 'Edit', edit_task_path(@task) %> |
 <% elsif current_user.freelancer? && @task.open? %>
-<%= link_to 'Accept', accept_task_path(@task), method: :post, data: { turbolinks: false } %>
+<%= form_with url: accept_task_path(@task), method: :post do %>
+  <%= submit_tag 'Accept' %>
+<% end %>
+
 <% end %>
 
 <%= link_to 'Back', tasks_path %>
