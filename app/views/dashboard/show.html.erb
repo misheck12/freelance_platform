@@ -73,7 +73,7 @@
       <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-primary' %>
     </div>
 
-  <% elsif current_user.client? %>
+   <% elsif current_user.client? %>
     <!-- Client Dashboard Content -->
     <div class="card shadow mb-4 animated">
       <div class="card-header bg-secondary text-white">
@@ -83,17 +83,32 @@
         <%= link_to 'Create New Task', new_task_path, class: "btn btn-outline-secondary mb-3" %>
         
         <h4 class="text-secondary">Your Tasks</h4>
-        <ul class="list-group">
-          <% current_user.tasks_as_client.each do |task| %>
-            <li class="list-group-item list-group-item-light">
-              <%= link_to task.title, task_path(task) %> - 
-              <span class="badge bg-light text-secondary">Status: <%= task.status %></span>
-            </li>
-          <% end %>
-        </ul>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Budget</th>
+              <th>Deadline</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_user.tasks_as_client.each do |task| %>
+              <tr>
+                <td><%= link_to task.title, task_path(task) %></td>
+                <td><%= task.description %></td>
+                <td><%= task.budget %></td>
+                <td><%= task.deadline %></td>
+                <td><%= task.status %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
 
+    <!-- Your Reviews Section -->
     <div class="card shadow animated">
       <div class="card-header bg-secondary text-white">
         Your Reviews
@@ -122,21 +137,37 @@
       </div>
       <div class="card-body">
         <h4 class="text-secondary">Available Tasks</h4>
-        <ul class="list-group">
-          <% Task.open_tasks.each do |task| %>
-            <li class="list-group-item list-group-item-light">
-              <%= link_to task.title, task_path(task) %>
-            </li>
-          <% end %>
-        </ul>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Budget</th>
+              <th>Deadline</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% Task.open_tasks.each do |task| %>
+              <tr>
+                <td><%= link_to task.title, task_path(task) %></td>
+                <td><%= task.description %></td>
+                <td><%= task.budget %></td>
+                <td><%= task.deadline %></td>
+                <td><%= task.status %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
 
+    <!-- Tasks You're Working On -->
     <div class="card shadow mb-4 animated">
       <div class="card-header bg-secondary text-white">
         Tasks You're Working On
       </div>
-      <div the "card-body">
+      <div class="card-body">
         <ul class="list-group">
           <% current_user.tasks_as_freelancer.each do |task| %>
             <li class="list-group-item list-group-item-light">
@@ -147,8 +178,9 @@
       </div>
     </div>
 
+    <!-- Your Reviews -->
     <div class="card shadow animated">
-      <div class="card-header bg-secondary text-white">
+      <div the "card-header bg-secondary text-white">
         Your Reviews
       </div>
       <div class="card-body">
