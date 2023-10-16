@@ -10,6 +10,9 @@
     </div>
   <% end %>
 
+  <!-- Hidden field for the user (client) ID -->
+  <%= form.hidden_field :client_id, value: current_user.id %>
+
   <div class="field">
     <%= form.label :title %>
     <%= form.text_field :title %>
