@@ -163,20 +163,36 @@
     </div>
 
     <!-- Tasks You're Working On -->
-    <div class="card shadow mb-4 animated">
-      <div class="card-header bg-secondary text-white">
-        Tasks You're Working On
-      </div>
-      <div class="card-body">
-        <ul class="list-group">
-          <% current_user.tasks_as_freelancer.each do |task| %>
-            <li class="list-group-item list-group-item-light">
-              <%= link_to task.title, task_path(task) %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
+<div class="card shadow mb-4 animated">
+  <div class="card-header bg-secondary text-white">
+    Tasks You're Working On
+  </div>
+  <div class="card-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Budget</th>
+          <th>Deadline</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% current_user.tasks_as_freelancer.each do |task| %>
+          <tr>
+            <td><%= link_to task.title, task_path(task) %></td>
+            <td><%= task.description %></td>
+            <td><%= task.budget %></td>
+            <td><%= task.deadline %></td>
+            <td><%= task.status %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
     <!-- Your Reviews -->
     <div class="card shadow animated">
