@@ -14,7 +14,11 @@ Rails.application.routes.draw do
   end
 
   # Other application routes
-  resources :tasks
+  resources :tasks do
+    put 'accept', on: :member
+    # or use `patch` if you prefer
+    # patch 'accept', on: :member
+  end
   resources :reviews, only: [:show, :new, :create, :edit, :update, :destroy]
 
   get 'dashboard', to: 'dashboard#show', as: 'dashboard'
