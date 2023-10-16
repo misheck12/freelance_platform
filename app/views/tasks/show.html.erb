@@ -10,7 +10,7 @@
 <% if current_user == @task.client %>
   <%= link_to 'Edit', edit_task_path(@task) %> |
 <% elsif current_user.freelancer? && @task.open? %>
-<%= button_to 'Accept', accept_task_path(@task), 'data-turbolinks': false %>
+  <%= link_to 'Accept', accept_task_path(@task), method: :post %>
 <% end %>
 
 <%= link_to 'Back', tasks_path %>
