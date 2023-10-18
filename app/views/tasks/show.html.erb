@@ -10,16 +10,14 @@
 
 <% if current_user == @task.client %>
   <%= link_to 'Edit', edit_task_path(@task) %> |
-<% elsif current_user.freelancer? %>
-  <% if @task.open? %>
-    <%= form_with url: accept_task_path(@task), method: :post do %>
-      <%= submit_tag 'Accept' %>
-    <% end %>
-  <% elsif @task.accepted? && @task.freelancer == current_user %>
-    <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
-      <%= form.file_field :completed_file %>
-      <%= form.submit 'Submit' %>
-    <% end %>
+<% elsif current_user.freelancer? && @task.open? %>
+  <%= form_with url: accept_task_path(@task), method: :post do %>
+    <%= submit_tag 'Accept' %>
+  <% end %>
+<% elsif @task.in_progress? && @task.freelancer == current_user %>
+  <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
+    <%= form.file_field :completed_file %>
+    <%= form.submit 'Submit Completed Task' %>
   <% end %>
 <% end %>
 
