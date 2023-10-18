@@ -89,6 +89,7 @@
               <th>Title</th>
               <th>Description</th>
               <th>Budget</th>
+              <th>Category</th>
               <th>Deadline</th>
               <th>Status</th>
             </tr>
@@ -99,6 +100,7 @@
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
                 <td><%= task.budget %></td>
+                <td><%= task.category%></td>
                 <td><%= task.deadline %></td>
                 <td><%= task.status %></td>
               </tr>
@@ -143,6 +145,7 @@
               <th>Title</th>
               <th>Description</th>
               <th>Budget</th>
+              <th>Category</th>
               <th>Deadline</th>
               <th>Status</th>
             </tr>
@@ -153,6 +156,7 @@
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
                 <td><%= task.budget %></td>
+                <td><%= task.category%></td>
                 <td><%= task.deadline %></td>
                 <td><%= task.status %></td>
               </tr>
@@ -185,7 +189,7 @@
             <td><%= link_to task.title, task_path(task) %></td>
             <td><%= task.description %></td>
             <td><%= task.budget %></td>
-            <td><%%>
+            <td><%= task.category%></td>
             <td><%= task.deadline %></td>
             <td><%= task.status %></td>
           </tr>
