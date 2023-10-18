@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :tasks do
     member do
       post 'accept'  # This creates a route for a POST request to /tasks/:id/accept
+      post ''
     end
   end
   resources :reviews, only: [:show, :new, :create, :edit, :update, :destroy]
