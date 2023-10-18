@@ -28,7 +28,12 @@ class TasksController < ApplicationController
     end
   
     def update
+      @task = Task.find(params[:id])
       if @task.update(task_params)
+        # Handle the file attachment here
+        if params[:task][:submission_file]
+          @task.submission_file.attach(params[:task][:submission_file])
+        end
         redirect_to @task, notice: 'Task was successfully updated.'
       else
         render :edit
