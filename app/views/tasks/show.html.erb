@@ -17,7 +17,7 @@
 <% elsif @task.in_progress? && @task.freelancer == current_user %>
   <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
     <%= form.file_field :completed_file %>
-    <%= form.submit 'Submit Completed Task' %>
+    <%= form.submit 'Submit Task' %>
   <% end %>
 <% end %>
 
