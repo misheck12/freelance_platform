@@ -5,6 +5,7 @@ class Task < ApplicationRecord
   validates :budget, presence: true, numericality: { greater_than: 0 }
   validates :deadline, presence: true
 
+  has_one_attached :completed_file
   # Enum for status
   enum status: { open: 0, in_progress: 1, under_review: 2, completed: 3 }
 
