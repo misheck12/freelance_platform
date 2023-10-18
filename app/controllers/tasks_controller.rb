@@ -26,6 +26,16 @@ class TasksController < ApplicationController
   
     def edit
     end
+
+    def complete
+      @task = Task.find(params[:id])
+      # Add your logic for completing the task here. For example:
+      # - Update the task's status
+      # - Attach the uploaded file
+      # - etc.
+  
+      # Redirect to a relevant path with a success message, or handle errors as appropriate.
+    end
   
     def update
       @task = Task.find(params[:id])
