@@ -15,10 +15,11 @@
     <%= submit_tag 'Accept' %>
   <% end %>
 <% elsif @task.in_progress? && @task.freelancer == current_user %>
-  <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
-    <%= form.file_field :completed_file %>
-    <%= form.submit 'Submit Task' %>
+  <%= form_with url: complete_task_path(@task), method: :post, local: true, html: { multipart: true } do |form| %>
+    <%= form.label :completed_file, 'Attach File:' %>
+    <%= form.file_field :completed_file, required: true %>
+    <%= form.submit 'Submit Completed Task' %>
   <% end %>
 <% end %>
 
-<%= link_to 'Back', tasks_path %>
+<%= link_to 'Back', Dashboard_path %>
