@@ -1,42 +1,51 @@
-<!-- app/views/tasks/show.html.erb -->
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="mb-4"><%= @task.title %></h1>
 
-<h1><%= @task.title %></h1>
-
-<p>
-  Description: <%= @task.description %><br>
-  Budget: <%= @task.budget %><br>
-  Category: <%= @task.category %><br>
-  Deadline: <%= @task.deadline %><br>
-  Status: <%= @task.status %>
-</p>
-
-<% if current_user == @task.client %>
-  <% if @task.completed? %>
-    <% if @task.completed_file.attached? %>
       <p>
-        Completed file: <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
+        <strong>Description:</strong> <%= @task.description %><br>
+        <strong>Budget:</strong> <%= @task.budget %><br>
+        <strong>Category:</strong> <%= @task.category %><br>
+        <strong>Deadline:</strong> <%= @task.deadline %><br>
+        <strong>Status:</strong> <%= @task.status %>
       </p>
-    <% end %>
-    <!-- Change request form -->
-    <%= form_with model: @task, url: request_changes_task_path(@task), method: :post do |form| %>
-      <%= form.label :change_request, "Request Changes:" %>
-      <%= form.text_area :change_request, required: true %>
-      <%= form.submit 'Submit Request', class: 'btn btn-warning' %>
-    <% end %>
-  <% else %>
-    <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |
-  <% end %>
-<% elsif current_user.freelancer? %>
-  <% if @task.open? %>
-    <%= form_with url: accept_task_path(@task), method: :post do %>
-      <%= submit_tag 'Accept', class: 'btn btn-primary' %>
-    <% end %>
-  <% elsif @task.in_progress? && @task.freelancer == current_user %>
-    <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
-      <%= form.file_field :completed_file %>
-      <%= form.submit 'Submit Task', class: 'btn btn-primary' %>
-    <% end %>
-  <% end %>
-<% end %>
 
-<%= link_to 'Back', tasks_path, class: 'btn btn-secondary' %>
+      <% if current_user == @task.client %>
+        <% if @task.completed? %>
+          <% if @task.completed_file.attached? %>
+            <p>
+              <strong>Completed file:</strong> <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
+            </p>
+          <% end %>
+          <!-- Change request form -->
+          <%= form_with model: @task, url: request_changes_task_path(@task), method: :post, local: true do |form| %>
+            <div class="form-group">
+              <%= form.label :change_request, "Request Changes:" %>
+              <%= form.text_area :change_request, class: 'form-control', rows: '3', required: true %>
+            </div>
+            <%= form.submit 'Submit Request', class: 'btn btn-warning' %>
+          <% end %>
+        <% else %>
+          <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |
+        <% end %>
+      <% elsif current_user.freelancer? %>
+        <% if @task.open? %>
+          <%= form_with url: accept_task_path(@task), method: :post, local: true do |form| %>
+            <%= form.submit 'Accept', class: 'btn btn-primary' %>
+          <% end %>
+        <% elsif @task.in_progress? && @task.freelancer == current_user %>
+          <%= form_with url: complete_task_path(@task), method: :post, local: true, html: { multipart: true } do |form| %>
+            <div class="form-group">
+              <%= form.label :completed_file, 'Upload Completed File:' %>
+              <%= form.file_field :completed_file, class: 'form-control-file' %>
+            </div>
+            <%= form.submit 'Submit Task', class: 'btn btn-primary' %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <%= link_to 'Back', tasks_path, class: 'btn btn-secondary mt-3' %>
+    </div>
+  </div>
+</div>
