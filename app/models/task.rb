@@ -5,7 +5,7 @@ class Task < ApplicationRecord
   validates :budget, presence: true, numericality: { greater_than: 0 }
   validates :deadline, presence: true
 
-  has_one_attached :completed_file
+  has_one_attached :attachment
   has_many :change_requests
 
   # Enum for status
