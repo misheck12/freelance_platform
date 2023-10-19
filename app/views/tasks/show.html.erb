@@ -17,7 +17,12 @@
         Completed file: <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
       </p>
     <% end %>
-    <%= link_to 'Request Changes', request_changes_task_path(@task), method: :get, class: 'btn btn-warning' %>
+    <!-- Change request form -->
+    <%= form_with model: @task, url: request_changes_task_path(@task), method: :post do |form| %>
+      <%= form.label :change_request, "Request Changes:" %>
+      <%= form.text_area :change_request, required: true %>
+      <%= form.submit 'Submit Request', class: 'btn btn-warning' %>
+    <% end %>
   <% else %>
     <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |
   <% end %>
