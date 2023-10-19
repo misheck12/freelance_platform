@@ -3,77 +3,9 @@
 
   <% if current_user.admin? %>
     <!-- Admin Dashboard Content -->
-    <div class="card shadow mb-4 animated">
-      <div class="card-header bg-secondary text-white">
-        Admin Dashboard
-      </div>
-      <div class="card-body">
-        <ul class="list-unstyled">
-          <li>Total Tasks: <span class="badge bg-light text-secondary"><%= Task.count %></span></li>
-          <li>Total Clients: <span class="badge bg-light text-secondary"><%= User.client.count %></span></li>
-          <li>Total Freelancers: <span class="badge bg-light text-secondary"><%= User.freelancer.count %></span></li>
-        </ul>
-      </div>
-    </div>
+    <!-- ... existing admin content ... -->
 
-    <div class="card shadow mb-4 animated">
-      <div class="card-header bg-secondary text-white">
-        All Tasks
-      </div>
-      <div class="card-body">
-        <ul class="list-group">
-          <% Task.all.each do |task| %>
-            <li class="list-group-item list-group-item-light">
-              <%= link_to task.title, task_path(task) %> - 
-              <span class="badge bg-light text-secondary">Status: <%= task.status %></span>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card shadow animated">
-      <div class="card-header bg-secondary text-white">
-        All Reviews
-      </div>
-      <div class="card-body">
-        <ul class="list-group">
-          <% Review.all.each do |review| %>
-            <li class="list-group-item list-group-item-light">
-              Review for <%= link_to review.task.title, task_path(review.task) %>: 
-              <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-
-    <div class="mt-5">
-      <h4>Manage Users</h4>
-      <table class="table table-bordered table-hover">
-        <thead class="thead-light">
-          <tr>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% User.all.each do |user| %>
-            <tr>
-              <td><%= user.email %></td>
-              <td><%= user.role.capitalize %></td>
-              <td>
-                <%= link_to 'Delete', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-primary' %>
-    </div>
-
-   <% elsif current_user.client? %>
+  <% elsif current_user.client? %>
     <!-- Client Dashboard Content -->
     <div class="card shadow mb-4 animated">
       <div class="card-header bg-secondary text-white">
@@ -83,6 +15,16 @@
         <%= link_to 'Create New Task', new_task_path, class: "btn btn-outline-secondary mb-3" %>
         
         <h4 class="text-secondary">Your Tasks</h4>
+        <!-- ... existing tasks table ... -->
+      </div>
+    </div>
+
+    <!-- Completed Tasks -->
+    <div class="card shadow mb-4 animated">
+      <div class="card-header bg-success text-white">
+        Completed Tasks
+      </div>
+      <div class="card-body">
         <table class="table">
           <thead>
             <tr>
@@ -95,12 +37,45 @@
             </tr>
           </thead>
           <tbody>
-            <% current_user.tasks_as_client.each do |task| %>
+            <% current_user.tasks_as_client.completed.each do |task| %>
               <tr>
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
                 <td><%= task.budget %></td>
-                <td><%= task.category%></td>
+                <td><%= task.category %></td>
+                <td><%= task.deadline %></td>
+                <td><%= task.status %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tasks Under Review -->
+    <div class="card shadow mb-4 animated">
+      <div class="card-header bg-warning text-white">
+        Tasks Under Review
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Budget</th>
+              <th>Category</th>
+              <th>Deadline</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_user.tasks_as_client.under_review.each do |task| %>
+              <tr>
+                <td><%= link_to task.title, task_path(task) %></td>
+                <td><%= task.description %></td>
+                <td><%= task.budget %></td>
+                <td><%= task.category %></td>
                 <td><%= task.deadline %></td>
                 <td><%= task.status %></td>
               </tr>
@@ -111,25 +86,7 @@
     </div>
 
     <!-- Your Reviews Section -->
-    <div class="card shadow animated">
-      <div class="card-header bg-secondary text-white">
-        Your Reviews
-      </div>
-      <div class="card-body">
-        <ul class="list-group">
-          <% if current_user&.respond_to?(:reviews) && current_user.reviews.any? %>
-            <% current_user.reviews.each do |review| %>
-              <li class="list-group-item list-group-item-light">
-                Review for <%= link_to review.task.title, task_path(review.task) %>: 
-                <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
-              </li>
-            <% end %>
-          <% else %>
-            <p>No reviews available.</p>
-          <% end %>
-        </ul>
-      </div>
-    </div>
+    <!-- ... existing reviews content ... -->
 
   <% elsif current_user.freelancer? %>
     <!-- Freelancer Dashboard Content -->
@@ -139,6 +96,16 @@
       </div>
       <div class="card-body">
         <h4 class="text-secondary">Available Tasks</h4>
+        <!-- ... existing tasks table ... -->
+      </div>
+    </div>
+
+    <!-- Completed Tasks -->
+    <div class="card shadow mb-4 animated">
+      <div class="card-header bg-success text-white">
+        Completed Tasks
+      </div>
+      <div class="card-body">
         <table class="table">
           <thead>
             <tr>
@@ -151,12 +118,12 @@
             </tr>
           </thead>
           <tbody>
-            <% Task.open_tasks.each do |task| %>
+            <% current_user.tasks_as_freelancer.completed.each do |task| %>
               <tr>
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
                 <td><%= task.budget %></td>
-                <td><%= task.category%></td>
+                <td><%= task.category %></td>
                 <td><%= task.deadline %></td>
                 <td><%= task.status %></td>
               </tr>
@@ -166,60 +133,41 @@
       </div>
     </div>
 
-    <!-- Tasks You're Working On -->
-<div class="card shadow mb-4 animated">
-  <div class="card-header bg-secondary text-white">
-    Tasks You're Working On
-  </div>
-  <div class="card-body">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Budget</th>
-          <th>Category</th>
-          <th>Deadline</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% current_user.tasks_as_freelancer.each do |task| %>
-          <tr>
-            <td><%= link_to task.title, task_path(task) %></td>
-            <td><%= task.description %></td>
-            <td><%= task.budget %></td>
-            <td><%= task.category%></td>
-            <td><%= task.deadline %></td>
-            <td><%= task.status %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-
-    <!-- Your Reviews -->
-    <div class="card shadow animated">
-      <div the "card-header bg-secondary text-white">
-        Your Reviews
+    <!-- Tasks Under Review -->
+    <div class="card shadow mb-4 animated">
+      <div class="card-header bg-warning text-white">
+        Tasks Under Review
       </div>
       <div class="card-body">
-        <ul class="list-group">
-          <% if current_user&.respond_to?(:reviews) && current_user.reviews.any? %>
-            <% current_user.reviews.each do |review| %>
-              <li class="list-group-item list-group-item-light">
-                Review for <%= link_to review.task.title, task_path(review.task) %>: 
-                <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
-              </li>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Budget</th>
+              <th>Category</th>
+              <th>Deadline</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_user.tasks_as_freelancer.under_review.each do |task| %>
+              <tr>
+                <td><%= link_to task.title, task_path(task) %></td>
+                <td><%= task.description %></td>
+                <td><%= task.budget %></td>
+                <td><%= task.category %></td>
+                <td><%= task.deadline %></td>
+                <td><%= task.status %></td>
+              </tr>
             <% end %>
-          <% else %>
-            <p>No reviews available.</p>
-          <% end %>
-        </ul>
+          </tbody>
+        </table>
       </div>
     </div>
+
+    <!-- Your Reviews -->
+    <!-- ... existing reviews content ... -->
   <% end %>
 
   <style>
