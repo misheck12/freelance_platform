@@ -55,10 +55,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def new_request_changes
-    # Ensure you have a corresponding view file: new_request_changes.html.erb
-  end
-
   def create_request_changes
     @change_request = @task.change_requests.new(change_request_params)
     @change_request.requester = current_user
