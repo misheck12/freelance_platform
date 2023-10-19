@@ -1,95 +1,91 @@
 class TasksController < ApplicationController
-    before_action :set_task, only: [:show, :edit, :update, :destroy]
-  
-    def index
-      @tasks = Task.all
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :complete, :new_request_changes, :create_request_changes, :accept]
+
+  def index
+    @tasks = Task.all
+  end
+
+  def show
+  end
+
+  def new
+    @task = Task.new
+  end
+
+  def create
+    @task = Task.new(task_params)
+    @task.client = current_user
+
+    if @task.save
+      redirect_to @task, notice: 'Task was successfully created.'
+    else
+      render :new
     end
-  
-    def show
+  end
+
+  def edit
+  end
+
+  def update
+    if @task.update(task_params)
+      redirect_to @task, notice: 'Task was successfully updated.'
+    else
+      render :edit
     end
-  
-    def new
-      @task = Task.new
+  end
+
+  def accept
+    if current_user.freelancer? && @task.open?
+      @task.update(freelancer: current_user, status: :in_progress)
+      redirect_to @task, notice: 'Task has been accepted!'
+    else
+      redirect_to @task, alert: 'You cannot accept this task!'
     end
-  
-    def create
-      @task = Task.new(task_params)
-      @task.client = current_user  # Set the client to the current user
-    
-      if @task.save
-        redirect_to @task, notice: 'Task was successfully created.'
-      else
-        render :new
-      end
-    end
-    
-  
-    def edit
-    end
+  end
 
   def complete
-    @task = Task.find(params[:id])
-    if @task.update(completed_file: params[:completed_file], status: "completed")
-      redirect_to @task, notice: 'Task was successfully completed.'
+    if @task.freelancer == current_user && @task.in_progress?
+      if @task.update(task_params.merge(status: "completed"))
+        redirect_to @task, notice: 'Task was successfully completed.'
+      else
+        render :show, alert: 'Unable to complete task.'
+      end
     else
-      render :show, alert: 'Unable to complete task.'
+      redirect_to @task, alert: 'Not authorized to complete this task!'
     end
   end
 
   def new_request_changes
-    @task = Task.find(params[:id])
-    # Add any other logic you need for setting up a new request change
+    # Ensure you have a corresponding view file: new_request_changes.html.erb
   end
 
   def create_request_changes
-    @task = Task.find(params[:id])
-    # Logic for creating a request change, e.g., updating the task's status, saving a message, etc.
-    if @task.update(task_params)
-      # Handle a successful update, e.g., redirecting to the task, showing a success message, etc.
-      redirect_to @task
-    else
-      render 'new_request_changes'
-    end
-  end
-  
-    def update
-      @task = Task.find(params[:id])
-      if @task.update(task_params)
-        # Handle the file attachment here
-        if params[:task][:submission_file]
-          @task.submission_file.attach(params[:task][:submission_file])
-        end
-        redirect_to @task, notice: 'Task was successfully updated.'
-      else
-        render :edit
-      end
-    end
+    @change_request = @task.change_requests.new(change_request_params)
+    @change_request.requester = current_user
 
-    def accept
-      @task = Task.find(params[:id])
-      if current_user.freelancer? && @task.open?
-        @task.update(freelancer: current_user, status: :in_progress)
-        # redirect to show page with a success message
-        redirect_to @task, notice: 'Task has been accepted!'
-      else
-        # redirect to show page with an error message
-        redirect_to @task, alert: 'You cannot accept this task!'
-      end
-    end
-  
-    def destroy
-      @task.destroy
-      redirect_to tasks_url, notice: 'Task was successfully destroyed.'
-    end
-  
-    private
-  
-    def set_task
-      @task = Task.find(params[:id])
-    end
-  
-    def task_params
-      params.require(:task).permit(:title, :description, :budget, :deadline, :status, :client_id, :freelancer_id, :completed_file)
+    if @change_request.save
+      redirect_to @task, notice: 'Change request was successfully created.'
+    else
+      render :new_request_changes, alert: 'Unable to create change request.'
     end
   end
-  
+
+  def destroy
+    @task.destroy
+    redirect_to tasks_url, notice: 'Task was successfully destroyed.'
+  end
+
+  private
+
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
+  def task_params
+    params.require(:task).permit(:title, :description, :budget, :deadline, :status, :client_id, :freelancer_id, :completed_file)
+  end
+
+  def change_request_params
+    params.require(:change_request).permit(:content) # replace :content with your actual attributes
+  end
+end
