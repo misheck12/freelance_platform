@@ -18,7 +18,6 @@ Rails.application.routes.draw do
     member do
       post 'accept'
       post 'complete'
-      get 'request_changes', to: 'tasks#new_request_changes', as: :new_request_changes
       post 'request_changes', to: 'tasks#create_request_changes'
     end
   end
