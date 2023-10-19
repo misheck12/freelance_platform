@@ -94,10 +94,39 @@
       <div class="card-header bg-secondary text-white">
         Freelancer Dashboard
       </div>
-      <div class="card-body">
-        <h4 class="text-secondary">Available Tasks</h4>
-        <!-- ... existing tasks table ... -->
-      </div>
+     <div class="card-body">
+  <h4 class="text-secondary">Available Tasks</h4>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Budget</th>
+        <th>Category</th>
+        <th>Deadline</th>
+        <th>Status</th>
+        <th>Actions</th> <!-- Optional: for view, edit, delete -->
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= task.description %></td>
+          <td><%= number_to_currency(task.budget) %></td> <!-- Displaying budget in currency format -->
+          <td><%= task.category %></td>
+          <td><%= task.deadline.strftime("%B %d, %Y") %></td> <!-- Formatting the date -->
+          <td><%= task.status %></td>
+          <td>
+            <%= link_to 'Show', task_path(task), class: 'btn btn-info btn-sm' %> <!-- Link to view task -->
+            <!-- Add any other actions like edit or delete if needed -->
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
     </div>
 
     <!-- Completed Tasks -->
