@@ -6,6 +6,8 @@ class Task < ApplicationRecord
   validates :deadline, presence: true
 
   has_one_attached :completed_file
+  has_many :change_requests
+
   # Enum for status
   enum status: { open: 0, in_progress: 1, under_review: 2, completed: 3 }
 
