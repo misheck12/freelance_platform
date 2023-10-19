@@ -17,8 +17,6 @@
         Completed file: <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
       </p>
     <% end %>
-    <%= link_to 'Ask for Review', new_review_path(task_id: @task.id), class: 'btn btn-primary' %>
-    <!-- Add a button or link to request changes here -->
     <%= link_to 'Request Changes', new_task_change_request_path(@task), class: 'btn btn-warning' %>
   <% else %>
     <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |
