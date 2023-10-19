@@ -29,12 +29,15 @@ class TasksController < ApplicationController
 
     def complete
       @task = Task.find(params[:id])
-      # Add your logic for completing the task here. For example:
-      # - Update the task's status
-      # - Attach the uploaded file
-      # - etc.
-  
-      # Redirect to a relevant path with a success message, or handle errors as appropriate.
+    
+      if @task.update(completed_file: params[:completed_file])
+        # Redirect to the task's page with a success message
+        redirect_to @task, notice: 'File uploaded successfully!'
+      else
+        # If the save fails, render the task's page with error messages
+        flash.now[:alert] = 'There was a problem uploading your file.'
+        render :show
+      end
     end
   
     def update
