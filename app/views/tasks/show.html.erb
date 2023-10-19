@@ -10,6 +10,11 @@
 
 <% if current_user == @task.client %>
   <%= link_to 'Edit', edit_task_path(@task) %> |
+  <% if @task.completed? && @task.completed_file.attached? %>
+    <p>
+      Completed file: <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
+    </p>
+  <% end %>
 <% elsif current_user.freelancer? && @task.open? %>
   <%= form_with url: accept_task_path(@task), method: :post do %>
     <%= submit_tag 'Accept' %>
