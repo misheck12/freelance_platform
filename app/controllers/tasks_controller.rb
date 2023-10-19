@@ -58,11 +58,12 @@ class TasksController < ApplicationController
   def create_request_changes
     @change_request = @task.change_requests.new(change_request_params)
     @change_request.requester = current_user
-
+  
     if @change_request.save
-      redirect_to @task, notice: 'Change request was successfully created.'
+      redirect_to @task, notice: 'Change request was successfully submitted.'
     else
-      render :new_request_changes, alert: 'Unable to create change request.'
+      flash.now[:alert] = 'Unable to submit your request. Please try again.'
+      render :show
     end
   end
 
