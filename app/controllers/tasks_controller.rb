@@ -27,26 +27,41 @@ class TasksController < ApplicationController
     def edit
     end
 
-    def complete
-      @task = Task.find(params[:id])
-      if @task.update(completed_file: params[:completed_file], status: "completed")
-        redirect_to @task, notice: 'Task was successfully completed.'
-      else
-        render :show, alert: 'Unable to complete task.'
-      end
+  def complete
+    @task = Task.find(params[:id])
+    if @task.update(completed_file: params[:completed_file], status: "completed")
+      redirect_to @task, notice: 'Task was successfully completed.'
+    else
+      render :show, alert: 'Unable to complete task.'
     end
+  end
+
+  def new_request_changes
+    @task = Task.find(params[:id])
+    # Add any other logic you need for setting up a new request change
+  end
+
+  def create_request_changes
+    @task = Task.find(params[:id])
+    # Logic for creating a request change, e.g., updating the task's status, saving a message, etc.
+    if @task.update(task_params)
+      # Handle a successful update, e.g., redirecting to the task, showing a success message, etc.
+      redirect_to @task
+    else
+      render 'new_request_changes'
+    end
+  end
   
     def update
       @task = Task.find(params[:id])
-      if current_user == @task.client && @task.completed? && params[:task][:change_requests].present?
-        if @task.update(change_request_params)
-          # Notify the freelancer about the change request here, if necessary
-          redirect_to @task, notice: 'Change request was successfully sent.'
-        else
-          render :show
+      if @task.update(task_params)
+        # Handle the file attachment here
+        if params[:task][:submission_file]
+          @task.submission_file.attach(params[:task][:submission_file])
         end
+        redirect_to @task, notice: 'Task was successfully updated.'
       else
-        # ... handle other updates ...
+        render :edit
       end
     end
 
@@ -68,10 +83,6 @@ class TasksController < ApplicationController
     end
   
     private
-
-    def change_request_params
-      params.require(:task).permit(:change_requests)
-    end
   
     def set_task
       @task = Task.find(params[:id])
