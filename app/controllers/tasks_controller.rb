@@ -15,7 +15,8 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.client = current_user
-
+    @task.status = 'open' # or whatever status signifies a new task
+  
     if @task.save
       redirect_to @task, notice: 'Task was successfully created.'
     else
