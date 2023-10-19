@@ -38,14 +38,15 @@ class TasksController < ApplicationController
   
     def update
       @task = Task.find(params[:id])
-      if @task.update(task_params)
-        # Handle the file attachment here
-        if params[:task][:submission_file]
-          @task.submission_file.attach(params[:task][:submission_file])
+      if current_user == @task.client && @task.completed? && params[:task][:change_requests].present?
+        if @task.update(change_request_params)
+          # Notify the freelancer about the change request here, if necessary
+          redirect_to @task, notice: 'Change request was successfully sent.'
+        else
+          render :show
         end
-        redirect_to @task, notice: 'Task was successfully updated.'
       else
-        render :edit
+        # ... handle other updates ...
       end
     end
 
@@ -67,6 +68,10 @@ class TasksController < ApplicationController
     end
   
     private
+
+    def change_request_params
+      params.require(:task).permit(:change_requests)
+    end
   
     def set_task
       @task = Task.find(params[:id])
