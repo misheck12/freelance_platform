@@ -9,21 +9,27 @@
 </p>
 
 <% if current_user == @task.client %>
-  <%= link_to 'Edit', edit_task_path(@task) %> |
-  <% if @task.completed? && @task.completed_file.attached? %>
-    <p>
-      Completed file: <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
-    </p>
+  <% if @task.completed? %>
+    <% if @task.completed_file.attached? %>
+      <p>
+        Completed file: <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
+      </p>
+    <% end %>
+    <%= link_to 'Ask for Review', new_review_path(task_id: @task.id), class: 'btn btn-primary' %>
+  <% else %>
+    <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |
   <% end %>
-<% elsif current_user.freelancer? && @task.open? %>
-  <%= form_with url: accept_task_path(@task), method: :post do %>
-    <%= submit_tag 'Accept' %>
-  <% end %>
-<% elsif @task.in_progress? && @task.freelancer == current_user %>
-  <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
-    <%= form.file_field :completed_file %>
-    <%= form.submit 'Submit Task' %>
+<% elsif current_user.freelancer? %>
+  <% if @task.open? %>
+    <%= form_with url: accept_task_path(@task), method: :post do %>
+      <%= submit_tag 'Accept', class: 'btn btn-primary' %>
+    <% end %>
+  <% elsif @task.in_progress? && @task.freelancer == current_user %>
+    <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
+      <%= form.file_field :completed_file %>
+      <%= form.submit 'Submit Task', class: 'btn btn-primary' %>
+    <% end %>
   <% end %>
 <% end %>
 
-<%= link_to 'Back', dashboard_show_path %>
+<%= link_to 'Back', dashboard_show_path, class: 'btn btn-secondary' %>
