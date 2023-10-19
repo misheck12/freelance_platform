@@ -16,12 +16,13 @@ Rails.application.routes.draw do
   # Other application routes
   resources :tasks do
     member do
-      post 'accept'  # This creates a route for a POST request to /tasks/:id/accept
-      post 'complete'  # This defines the route for completing a task
+      post 'accept'
+      post 'complete'
+      get 'request_changes', to: 'tasks#new_request_changes', as: :new_request_changes
+      post 'request_changes', to: 'tasks#create_request_changes'
     end
-    get 'request_changes/new', to: 'tasks#new_request_changes', as: :new_request_changes
-    post 'request_changes', to: 'tasks#create_request_changes'
   end
+  
   resources :reviews, only: [:show, :new, :create, :edit, :update, :destroy]
 
   get 'dashboard', to: 'dashboard#show', as: 'dashboard'
