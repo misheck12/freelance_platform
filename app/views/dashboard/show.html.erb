@@ -163,7 +163,7 @@
       <tr>
         <th>Title</th>
         <th>Description</th>
-        <th>Budget</th>
+        <th>Payment</th>
         <th>Category</th>
         <th>Deadline</th>
         <th>Status</th>
@@ -175,7 +175,7 @@
         <tr>
           <td><%= task.title %></td>
           <td><%= task.description %></td>
-          <td><%= number_to_currency(task.budget) %></td> <!-- Displaying budget in currency format -->
+          <td><%= number_to_currency(task.budget * 0.8) %></td> <!-- Displaying budget in currency format -->
           <td><%= task.category %></td>
           <td><%= task.deadline.strftime("%B %d, %Y") %></td> <!-- Formatting the date -->
           <td><%= task.status %></td>
@@ -201,7 +201,7 @@
             <tr>
               <th>Title</th>
               <th>Description</th>
-              <th>Budget</th>
+              <th>Payment</th>
               <th>Category</th>
               <th>Deadline</th>
               <th>Status</th>
@@ -212,7 +212,7 @@
               <tr>
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
-                <td><%= task.budget %></td>
+                <td><%= number_to_currency(task.budget * 0.8) %></td>
                 <td><%= task.category %></td>
                 <td><%= task.deadline %></td>
                 <td><%= task.status %></td>
@@ -234,7 +234,7 @@
             <tr>
               <th>Title</th>
               <th>Description</th>
-              <th>Budget</th>
+              <th>Payment</th>
               <th>Category</th>
               <th>Deadline</th>
               <th>Status</th>
@@ -267,7 +267,7 @@
             <tr>
               <th>Title</th>
               <th>Description</th>
-              <th>Budget</th>
+              <th>Payment</th>
               <th>Category</th>
               <th>Deadline</th>
               <th>Status</th>
