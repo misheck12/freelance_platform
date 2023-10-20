@@ -80,7 +80,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :description, :budget, :deadline, :client_id, :freelancer_id, :attachment, :completed_file)
+    params.require(:task).permit(:title, :description, :budget, :deadline, :client_id, :freelancer_id, :category, :attachment, :completed_file)
   end
 
   def change_request_params
