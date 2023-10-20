@@ -3,9 +3,9 @@
     <div id="error_explanation">
       <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
       <ul>
-      <% task.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
@@ -13,52 +13,60 @@
   <!-- Hidden field for the user (client) ID -->
   <%= form.hidden_field :client_id, value: current_user.id %>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
+  <!-- Wrap the form in a container and add a title -->
+  <div class="container">
+    <h1 class="text-center">Create a new task</h1>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
+    <div class="field">
+      <%= form.label :title, class: 'form-label', style: 'margin-bottom: 0.5rem;' %>
+      <%= form.text_field :title, class: 'form-control', placeholder: 'Enter a catchy title for your task' %>
+    </div>
 
-<div class="field">
-  <%= form.label :budget %>
-  <%= form.hidden_field :budget %> <!-- Change this to a hidden_field -->
-</div>
+    <div class="field">
+      <%= form.label :description, class: 'form-label', style: 'margin-bottom: 0.5rem;' %>
+      <%= form.text_area :description, class: 'form-control', placeholder: 'Enter a detailed description of your task' %>
+    </div>
 
-<!-- Add an input element for the number of pages -->
-<div class="field">
-  <%= label_tag :pages, 'Number of pages:' %>
-  <%= number_field_tag :pages, 1, min: 1, onchange: 'calculatePrice()' %>
-</div>
+    <div class="field">
+      <%= form.label :budget, class: 'form-label', style: 'margin-bottom: 0.5rem;' %>
+      <%= form.hidden_field :budget %><!-- Change this to a hidden_field -->
+    </div>
 
-<!-- Add an input element for the price -->
-<div class="field">
-  <%= label_tag :price, 'Price:' %>
-  <%= number_field_tag :price, nil, disabled: true %>
-</div>
+    <!-- Add an input element for the number of pages -->
+    <div class="field">
+      <%= label_tag :pages, 'Number of pages:', class: 'form-label', style: 'margin-bottom: 0.5rem;' %>
+      <%= number_field_tag :pages, 1, min: 1, onchange: 'calculatePrice()', class: 'form-control' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :category %>
-    <%= form.text_field :category %>
-  </div>
+    <!-- Add an input element for the price -->
+    <div class="field">
+      <%= label_tag :price, 'Price:', class: 'form-label', style: 'margin-bottom: 0.5rem;' %>
+      <%= number_field_tag :price, nil, disabled: true, class: 'form-control' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :deadline %>
-    <%= form.datetime_select :deadline %>
-  </div>
+    <div class="field">
+      <%= form.label :category, class: 'form-label', style: 'margin-bottom: 0.5rem;' %>
+      <%= form.text_field :category, class: 'form-control', placeholder: 'Enter a category for your task' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :attachment, 'File Attachment' %>
-    <%= form.file_field :attachment %>
-  </div>
+    <div class="field">
+      <%= form.label :deadline, class: 'form-label', style: 'margin-bottom: 0.5rem;' %>
+      <%= form.datetime_select :deadline, class: 'form-control' %>
+    </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+    <div class="field">
+      <%= form.label :attachment, 'File Attachment', class: 'form-label', style: 'margin-bottom: 0.5rem;' %>
+      <div class="custom-file">
+        <%= form.file_field :attachment, class: 'custom-file-input', id: 'customFile' %>
+        <%= form.label :attachment, 'Choose file', class: 'custom-file-label', for: 'customFile' %>
+      </div>
+    </div>
+
+    <div class="actions">
+      <%= form.submit 'Create Task', class: 'btn btn-primary btn-lg btn-block' %>
+    </div>
+  </div> <!-- End of container -->
+<% end %> <!-- End of form -->
 
 <script>
   // Define a constant for the cost per page
