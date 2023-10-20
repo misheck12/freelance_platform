@@ -1,31 +1,33 @@
-<div class=“container mt-5”> <div class=“row”> <div class=“col-md-12”> <div class=“card”> <div class=“card-header”> <h1 class=“mb-4”><%= @task.title %></h1> </div> <div class=“card-body”> <p> <strong>Description:</strong> <%= @task.description %><br> <strong>Budget:</strong> <%= @task.budget %><br> <strong>Category:</strong> <%= @task.category %><br> <strong>Deadline:</strong> <%= @task.deadline %><br> <strong>Status:</strong> <%= @task.status %> </p>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="mb-4"><%= @task.title %></h1>
+
+      <p>
+        <strong>Description:</strong> <%= @task.description %><br>
+        <strong>Budget:</strong> <%= @task.budget %><br>
+        <strong>Category:</strong> <%= @task.category %><br>
+        <strong>Deadline:</strong> <%= @task.deadline %><br>
+        <strong>Status:</strong> <%= @task.status %>
+      </p>
 
       <% if current_user == @task.client %>
         <% if @task.completed? %>
-          <ul class="list-group list-group-flush">
-            <% if @task.completed_file.attached? %>
-              <li class="list-group-item">
-                <p>
-                  <strong>Completed file:</strong> <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
-                </p>
-              </li>
-            <% end %>
-            <!-- Change request form -->
-            <li class="list-group-item">
-              <%= form_with model: @task, url: request_changes_task_path(@task), method: :post, local: true do |form| %>
-                <div class="form-group">
-                  <%= form.label :change_request, "Request Changes:" %>
-                  <%= form.text_area :change_request, class: 'form-control', rows: '3', required: true %>
-                </div>
-                <%= form.submit 'Submit Request', class: 'btn btn-warning' %>
-              <% end %> 
-            </li>
-          </ul>
+          <% if @task.completed_file.attached? %>
+            <p>
+              <strong>Completed file:</strong> <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment") %>
+            </p>
+          <% end %>
+          <!-- Change request form -->
+          <%= form_with model: @task, url: request_changes_task_path(@task), method: :post, local: true do |form| %>
+            <div class="form-group">
+              <%= form.label :change_request, "Request Changes:" %>
+              <%= form.text_area :change_request, class: 'form-control', rows: '3', required: true %>
+            </div>
+            <%= form.submit 'Submit Request', class: 'btn btn-warning' %>
+          <% end %>
         <% else %>
-          <div class="btn-group" role="group" aria-label="Edit and delete buttons">
-            <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> 
-            <%= link_to 'Delete', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %> 
-          </div>
+          <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |<%= link_to 'Delete', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %> |
         <% end %>
       <% elsif current_user.freelancer? %>
         <% if @task.open? %>
@@ -33,19 +35,17 @@
             <%= form.submit 'Accept', class: 'btn btn-primary' %>
           <% end %>
         <% elsif @task.in_progress? && @task.freelancer == current_user %>
-          <%= form_for @task, url: complete_task_path(@task), method: :patch do |f| %> <!-- Changed to use form_for and patch method -->
+          <%= form_with url: complete_task_path(@task), method: :post, local: true, html: { multipart: true } do |form| %>
             <div class="form-group">
-              <%= f.label :completed_file, 'Upload Completed File:' %> <!-- Changed to use f.label -->
-              <%= f.file_field :completed_file, class: 'form-control-file' %> <!-- Changed to use f.file_field -->
+              <%= form.label :completed_file, 'Upload Completed File:' %>
+              <%= form.file_field :completed_file, class: 'form-control-file' %>
             </div>
-            <%= f.submit 'Submit Task', class: 'btn btn-primary' %> <!-- Changed to use f.submit -->
+            <%= form.submit 'Submit Task', class: 'btn btn-primary' %>
           <% end %>
         <% end %>
       <% end %>
 
       <%= link_to 'Back', dashboard_path, class: 'btn btn-secondary mt-3' %>
-    </div> <!-- End of card-body -->
-  </div> <!-- End of card -->
-</div> <!-- End of col-md-12 -->
-
-</div> <!-- End of row --> </div> <!-- End of container -->
+    </div>
+  </div>
+</div>
