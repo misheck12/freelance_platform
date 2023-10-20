@@ -27,7 +27,7 @@
             <%= form.submit 'Submit Request', class: 'btn btn-warning' %>
           <% end %>
         <% else %>
-          <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |
+          <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |<%= link_to 'Delete', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %> |
         <% end %>
       <% elsif current_user.freelancer? %>
         <% if @task.open? %>
