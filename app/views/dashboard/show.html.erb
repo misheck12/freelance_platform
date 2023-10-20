@@ -214,7 +214,7 @@
                 <td><%= task.description %></td>
                 <td><%= number_to_currency(task.budget * 0.8) %></td>
                 <td><%= task.category %></td>
-                <td><%= task.deadline %></td>
+                <td><%= time_ago_in_words(task.deadline) %></td>
                 <td><%= task.status %></td>
               </tr>
             <% end %>
