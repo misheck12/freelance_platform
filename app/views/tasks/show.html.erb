@@ -40,8 +40,7 @@
               <%= form.label :completed_file, 'Upload Completed File:' %>
               <%= form.file_field :completed_file, class: 'form-control-file' %>
             </div>
-            <%= form.submit 'Submit Task', class: 'btn btn-primary' %>
-          <% end %>
+<%= form_for @task, url: complete_task_path(@task), method: :patch do |f| %> <!-- Your form fields here --> <%= f.submit “Complete Task” %> <% end %>          <% end %>
         <% end %>
       <% end %>
 
