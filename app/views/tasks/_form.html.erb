@@ -59,3 +59,24 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<script>
+  // Define a constant for the cost per page
+  const COST_PER_PAGE = 30;
+
+  // Define a function that calculates and displays the price based on the number of pages
+  function calculatePrice() {
+    // Get the number of pages from the input element
+    let pages = document.getElementById("pages").value;
+
+    // Calculate the price by multiplying the number of pages by the cost per page
+    let price = pages * COST_PER_PAGE;
+
+    // Display and assign the price in the input elements
+    document.getElementById("price").value = price;
+    document.getElementById("task_budget").value = price; // Assign the price to the budget field
+  }
+
+  // Call the function once when the page loads, to show and assign the initial price
+  calculatePrice();
+</script>
