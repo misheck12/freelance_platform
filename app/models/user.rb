@@ -4,7 +4,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   # Enum for roles
-  enum role: { client: 0, admin: 1, freelancer: 2 }
+  enum role: { admin: 0, client: 1, freelancer: 2 }
 
   # Associations
   has_many :tasks_as_client, class_name: 'Task', foreign_key: 'client_id'
