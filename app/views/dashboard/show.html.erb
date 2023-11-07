@@ -1,47 +1,47 @@
 <div class="container py-5">
-  <h3 class="mb-4 text-secondary">Welcome, <%= current_user.email %>!</h3>
+  <h3 class="mb-4" style="color: #0056b3;">Welcome, <%= current_user.email %>!</h3>
 
   <% if current_user.admin? %>
     <!-- Admin Dashboard Content -->
-    <div class="card shadow mb-4 animated">
-      <div class="card-header bg-secondary text-white">
+    <div class="card shadow mb-4 animated fadeIn">
+      <div class="card-header" style="background-color: #007bff; color: #ffffff;">
         Admin Dashboard
       </div>
-      <div class="card-body">
+      <div class="card-body" style="background-color: #f8f9fa;">
         <ul class="list-unstyled">
-          <li>Total Tasks: <span class="badge bg-light text-secondary"><%= Task.count %></span></li>
-          <li>Total Clients: <span class="badge bg-light text-secondary"><%= User.client.count %></span></li>
-          <li>Total Freelancers: <span class="badge bg-light text-secondary"><%= User.freelancer.count %></span></li>
+          <li>Total Tasks: <span class="badge" style="background-color: #0056b3; color: #ffffff;"><%= Task.count %></span></li>
+          <li>Total Clients: <span class="badge" style="background-color: #0056b3; color: #ffffff;"><%= User.client.count %></span></li>
+          <li>Total Freelancers: <span class="badge" style="background-color: #0056b3; color: #ffffff;"><%= User.freelancer.count %></span></li>
         </ul>
       </div>
     </div>
 
-    <div class="card shadow mb-4 animated">
-      <div class="card-header bg-secondary text-white">
+    <div class="card shadow mb-4 animated fadeIn">
+      <div class="card-header" style="background-color: #007bff; color: #ffffff;">
         All Tasks
       </div>
-      <div class="card-body">
+      <div class="card-body" style="background-color: #f8f9fa;">
         <ul class="list-group">
           <% Task.all.each do |task| %>
-            <li class="list-group-item list-group-item-light">
+            <li class="list-group-item" style="background-color: #fdfdfe;">
               <%= link_to task.title, task_path(task) %> - 
-              <span class="badge bg-light text-secondary">Status: <%= task.status %></span>
+              <span class="badge" style="background-color: #ffc107; color: #343a40;">Status: <%= task.status %></span>
             </li>
           <% end %>
         </ul>
       </div>
     </div>
 
-    <div class="card shadow animated">
-      <div class="card-header bg-secondary text-white">
+    <div class="card shadow animated fadeIn">
+      <div class="card-header" style="background-color: #007bff; color: #ffffff;">
         All Reviews
       </div>
-      <div class="card-body">
+      <div class="card-body" style="background-color: #f8f9fa;">
         <ul class="list-group">
           <% Review.all.each do |review| %>
-            <li class="list-group-item list-group-item-light">
+            <li class="list-group-item" style="background-color: #fdfdfe;">
               Review for <%= link_to review.task.title, task_path(review.task) %>: 
-              <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
+              <span class="badge" style="background-color: #28a745; color: #ffffff;"><%= review.rating %> stars</span> - <%= review.comment %>
             </li>
           <% end %>
         </ul>
@@ -49,9 +49,9 @@
     </div>
 
     <div class="mt-5">
-      <h4>Manage Users</h4>
+      <h4 style="color: #0056b3;">Manage Users</h4>
       <table class="table table-bordered table-hover">
-        <thead class="thead-light">
+        <thead class="thead-dark">
           <tr>
             <th>Email</th>
             <th>Role</th>
@@ -64,13 +64,13 @@
               <td><%= user.email %></td>
               <td><%= user.role.capitalize %></td>
               <td>
-                <%= link_to 'Delete', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+                <%= link_to 'Delete', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm', style: "background-color: #dc3545;" %>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
-      <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-primary' %>
+      <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-success', style: "background-color: #28a745;" %>
     </div>
 
    <% elsif current_user.client? %>
