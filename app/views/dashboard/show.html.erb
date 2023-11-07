@@ -73,69 +73,71 @@
       <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-primary' %>
     </div>
 
-   <% elsif current_user.client? %>
-    <!-- Client Dashboard Content -->
-<div class="card shadow mb-4 animated fadeIn">
-  <div class="card-header py-3 bg-dark text-white">
-    <h6 class="m-0 font-weight-bold">Client Dashboard</h6>
-  </div>
-  <div class="card-body">
-    <%= link_to 'Create New Task', new_task_path, class: "btn btn-primary mb-3" %>
+<% elsif current_user.client? %>
+  <!-- Client Dashboard Content -->
+  <div class="card shadow mb-4 animated fadeIn">
+    <div class="card-header py-3" style="background-color: #007bff; color: #ffffff;">
+      <h6 class="m-0 font-weight-bold">Client Dashboard</h6>
+    </div>
+    <div class="card-body" style="background-color: #f8f9fa;">
+      <%= link_to 'Create New Task', new_task_path, class: "btn mb-3", style: "background-color: #28a745; color: #ffffff;" %>
 
-    <% Task.statuses.keys.each do |status| %>
-      <div class="my-4">
-        <h5 class="text-primary mb-3">Your Tasks - <%= status.titleize %></h5>
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover">
-            <thead class="thead-dark">
-              <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Budget</th>
-                <th>Category</th>
-                <th>Deadline</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% current_user.tasks_as_client.where(status: status).each do |task| %>
+      <% Task.statuses.keys.each do |status| %>
+        <div class="my-4">
+          <h5 style="color: #0056b3;">Your Tasks - <%= status.titleize %></h5>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead style="background-color: #343a40; color: #ffffff;">
                 <tr>
-                  <td><%= link_to task.title, task_path(task), class: 'text-primary' %></td>
-                  <td><%= task.description %></td>
-                  <td><%= number_to_currency(task.budget) %></td>
-                  <td><%= task.category %></td>
-                  <td><%= task.deadline.strftime('%b %d, %Y') %></td>
-                  <td><span class="badge <%= badge_color_for_status(task.status) %>"><%= task.status.titleize %></span></td>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Budget</th>
+                  <th>Category</th>
+                  <th>Deadline</th>
+                  <th>Status</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <% current_user.tasks_as_client.where(status: status).each do |task| %>
+                  <tr>
+                    <td><%= link_to task.title, task_path(task), class: 'text-primary', style: 'color: #007bff;' %></td>
+                    <td><%= task.description %></td>
+                    <td><%= number_to_currency(task.budget) %></td>
+                    <td><%= task.category %></td>
+                    <td><%= task.deadline.strftime('%b %d, %Y') %></td>
+                    <td><span class="badge <%= badge_color_for_status(task.status) %>"><%= task.status.titleize %></span></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    <% end %>
-  </div>
-</div>
-
-<!-- Your Reviews Section -->
-<div class="card shadow mb-4 animated fadeIn">
-  <div class="card-header py-3 bg-dark text-white">
-    <h6 class="m-0 font-weight-bold">Your Reviews</h6>
-  </div>
-  <div class="card-body">
-    <ul class="list-group list-group-flush">
-      <% if current_user&.respond_to?(:reviews) && current_user.reviews.any? %>
-        <% current_user.reviews.each do |review| %>
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            Review for <%= link_to review.task.title, task_path(review.task), class: 'text-primary' %>
-            <span class="badge <%= badge_color_for_rating(review.rating) %> badge-pill"><%= review.rating %> stars</span> - <%= review.comment %>
-          </li>
-        <% end %>
-      <% else %>
-        <li class="list-group-item">No reviews available.</li>
       <% end %>
-    </ul>
+    </div>
   </div>
-</div>
+
+  <!-- Your Reviews Section -->
+  <div class="card shadow mb-4 animated fadeIn">
+    <div class="card-header py-3" style="background-color: #007bff; color: #ffffff;">
+      <h6 class="m-0 font-weight-bold">Your Reviews</h6>
+    </div>
+    <div class="card-body" style="background-color: #f8f9fa;">
+      <ul class="list-group list-group-flush">
+        <% if current_user.reviews.any? %>
+          <% current_user.reviews.each do |review| %>
+            <li class="list-group-item" style="background-color: #fdfdfe;">
+              Review for <%= link_to review.task.title, task_path(review.task), class: 'text-primary', style: 'color: #007bff;' %>
+              <span class="badge <%= badge_color_for_rating(review.rating) %> badge-pill"><%= review.rating %> stars</span> - <%= review.comment %>
+            </li>
+          <% end %>
+        <% else %>
+          <li class="list-group-item" style="background-color: #fdfdfe;">No reviews available.</li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
 
 
   <% elsif current_user.freelancer? %>
