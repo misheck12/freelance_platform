@@ -75,40 +75,42 @@
 
    <% elsif current_user.client? %>
     <!-- Client Dashboard Content -->
-    <div class="card shadow mb-4 animated">
-      <div class="card-header bg-secondary text-white">
-        Client Dashboard
-      </div>
-      <div class="card-body">
-        <%= link_to 'Create New Task', new_task_path, class: "btn btn-outline-secondary mb-3" %>
-        
-        <h4 class="text-secondary">Your Tasks</h4>
-        <table class="table">
-          <thead>
+<div class="card shadow mb-4 animated">
+  <div class="card-header bg-secondary text-white">
+    Client Dashboard
+  </div>
+  <div class="card-body">
+    <%= link_to 'Create New Task', new_task_path, class: "btn btn-outline-secondary mb-3" %>
+
+    <% Task.statuses.keys.each do |status| %>
+      <h4 class="text-secondary">Your Tasks - <%= status.titleize %></h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Budget</th>
+            <th>Category</th>
+            <th>Deadline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% current_user.tasks_as_client.where(status: status).each do |task| %>
             <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Budget</th>
-              <th>Category</th>
-              <th>Deadline</th>
-              <th>Status</th>
+              <td><%= link_to task.title, task_path(task) %></td>
+              <td><%= task.description %></td>
+              <td><%= number_to_currency(task.budget) %></td>
+              <td><%= task.category %></td>
+              <td><%= task.deadline.strftime('%b %d, %Y') %></td>
+              <td><%= task.status.titleize %></td>
             </tr>
-          </thead>
-          <tbody>
-            <% current_user.tasks_as_client.each do |task| %>
-              <tr>
-                <td><%= link_to task.title, task_path(task) %></td>
-                <td><%= task.description %></td>
-                <td><%= task.budget %></td>
-                <td><%= task.category%></td>
-                <td><%= task.deadline %></td>
-                <td><%= task.status %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
 
     <!-- Your Reviews Section -->
     <div class="card shadow animated">
