@@ -140,111 +140,92 @@
 
 
 
-  <% elsif current_user.freelancer? %>
-    <!-- Freelancer Dashboard Content -->
-    <div class="card shadow mb-4 animated">
-      <div class="card-header bg-secondary text-white">
-        Freelancer Dashboard
-      </div>
-      <div class="card-body">
-        <h4 class="text-secondary">Available Tasks</h4>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Budget</th>
-              <th>Category</th>
-              <th>Deadline</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% Task.open_tasks.each do |task| %>
-              <tr>
-                <td><%= link_to task.title, task_path(task) %></td>
-                <td><%= task.description %></td>
-                <td><%= task.budget %></td>
-                <td><%= task.category%></td>
-                <td><%= task.deadline %></td>
-                <td><%= task.status %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+ <% elsif current_user.freelancer? %>
+  <!-- Freelancer Dashboard Content -->
+  <div class="card shadow mb-4 animated fadeIn">
+    <div class="card-header py-3" style="background-color: #007bff; color: #ffffff;">
+      Freelancer Dashboard
     </div>
-
-    <!-- Tasks You're Working On -->
-<div class="card shadow mb-4 animated">
-  <div class="card-header bg-secondary text-white">
-    Tasks You're Working On
-  </div>
-  <div class="card-body">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Budget</th>
-          <th>Category</th>
-          <th>Deadline</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% current_user.tasks_as_freelancer.each do |task| %>
+    <div class="card-body" style="background-color: #f8f9fa;">
+      <h4 style="color: #0056b3;">Available Tasks</h4>
+      <table class="table table-bordered table-hover">
+        <thead style="background-color: #343a40; color: #ffffff;">
           <tr>
-            <td><%= link_to task.title, task_path(task) %></td>
-            <td><%= task.description %></td>
-            <td><%= task.budget %></td>
-            <td><%= task.category%></td>
-            <td><%= task.deadline %></td>
-            <td><%= task.status %></td>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Budget</th>
+            <th>Category</th>
+            <th>Deadline</th>
+            <th>Status</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-
-    <!-- Your Reviews -->
-    <div class="card shadow animated">
-      <div the "card-header bg-secondary text-white">
-        Your Reviews
-      </div>
-      <div class="card-body">
-        <ul class="list-group">
-          <% if current_user&.respond_to?(:reviews) && current_user.reviews.any? %>
-            <% current_user.reviews.each do |review| %>
-              <li class="list-group-item list-group-item-light">
-                Review for <%= link_to review.task.title, task_path(review.task) %>: 
-                <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
-              </li>
-            <% end %>
-          <% else %>
-            <p>No reviews available.</p>
+        </thead>
+        <tbody>
+          <% Task.open_tasks.each do |task| %>
+            <tr>
+              <td><%= link_to task.title, task_path(task), style: 'color: #007bff;' %></td>
+              <td><%= task.description %></td>
+              <td><%= number_to_currency(task.budget) %></td>
+              <td><%= task.category %></td>
+              <td><%= task.deadline.strftime('%b %d, %Y') %></td>
+              <td><span class="badge <%= badge_color_for_status(task.status) %>"><%= task.status.titleize %></span></td>
+            </tr>
           <% end %>
-        </ul>
-      </div>
+        </tbody>
+      </table>
     </div>
-  <% end %>
+  </div>
 
-  <style>
-    /* Simple fade-in animation */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
+  <!-- Tasks You're Working On -->
+  <div class="card shadow mb-4 animated fadeIn">
+    <div class="card-header py-3" style="background-color: #007bff; color: #ffffff;">
+      Tasks You're Working On
+    </div>
+    <div class="card-body" style="background-color: #f8f9fa;">
+      <table class="table table-bordered table-hover">
+        <thead style="background-color: #343a40; color: #ffffff;">
+          <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Budget</th>
+            <th>Category</th>
+            <th>Deadline</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% current_user.tasks_as_freelancer.each do |task| %>
+            <tr>
+              <td><%= link_to task.title, task_path(task), style: 'color: #007bff;' %></td>
+              <td><%= task.description %></td>
+              <td><%= number_to_currency(task.budget) %></td>
+              <td><%= task.category %></td>
+              <td><%= task.deadline.strftime('%b %d, %Y') %></td>
+              <td><span class="badge <%= badge_color_for_status(task.status) %>"><%= task.status.titleize %></span></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    .animated {
-      animation-name: fadeIn;
-      animation-duration: 1.5s;
-    }
-  </style>
-</div>
+  <!-- Your Reviews -->
+  <div class="card shadow animated fadeIn">
+    <div class="card-header py-3" style="background-color: #007bff; color: #ffffff;">
+      Your Reviews
+    </div>
+    <div class="card-body" style="background-color: #f8f9fa;">
+      <ul class="list-group list-group-flush">
+        <% if current_user.reviews.any? %>
+          <% current_user.reviews.each do |review| %>
+            <li class="list-group-item" style="background-color: #fdfdfe;">
+              Review for <%= link_to review.task.title, task_path(review.task), style: 'color: #007bff;' %>
+              <span class="badge <%= badge_color_for_rating(review.rating) %> badge-pill"><%= review.rating %> stars</span> - <%= review.comment %>
+            </li>
+          <% end %>
+        <% else %>
+          <li class="list-group-item" style="background-color: #fdfdfe;">No reviews available.</li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
