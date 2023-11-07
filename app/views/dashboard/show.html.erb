@@ -1,47 +1,47 @@
 <div class="container py-5">
-  <h3 class="mb-4" style="color: #0056b3;">Welcome, <%= current_user.email %>!</h3>
+  <h3 class="mb-4 text-secondary">Welcome, <%= current_user.email %>!</h3>
 
   <% if current_user.admin? %>
     <!-- Admin Dashboard Content -->
-    <div class="card shadow mb-4 animated fadeIn">
-      <div class="card-header" style="background-color: #007bff; color: #ffffff;">
+    <div class="card shadow mb-4 animated">
+      <div class="card-header bg-secondary text-white">
         Admin Dashboard
       </div>
-      <div class="card-body" style="background-color: #f8f9fa;">
+      <div class="card-body">
         <ul class="list-unstyled">
-          <li>Total Tasks: <span class="badge" style="background-color: #0056b3; color: #ffffff;"><%= Task.count %></span></li>
-          <li>Total Clients: <span class="badge" style="background-color: #0056b3; color: #ffffff;"><%= User.client.count %></span></li>
-          <li>Total Freelancers: <span class="badge" style="background-color: #0056b3; color: #ffffff;"><%= User.freelancer.count %></span></li>
+          <li>Total Tasks: <span class="badge bg-light text-secondary"><%= Task.count %></span></li>
+          <li>Total Clients: <span class="badge bg-light text-secondary"><%= User.client.count %></span></li>
+          <li>Total Freelancers: <span class="badge bg-light text-secondary"><%= User.freelancer.count %></span></li>
         </ul>
       </div>
     </div>
 
-    <div class="card shadow mb-4 animated fadeIn">
-      <div class="card-header" style="background-color: #007bff; color: #ffffff;">
+    <div class="card shadow mb-4 animated">
+      <div class="card-header bg-secondary text-white">
         All Tasks
       </div>
-      <div class="card-body" style="background-color: #f8f9fa;">
+      <div class="card-body">
         <ul class="list-group">
           <% Task.all.each do |task| %>
-            <li class="list-group-item" style="background-color: #fdfdfe;">
+            <li class="list-group-item list-group-item-light">
               <%= link_to task.title, task_path(task) %> - 
-              <span class="badge" style="background-color: #ffc107; color: #343a40;">Status: <%= task.status %></span>
+              <span class="badge bg-light text-secondary">Status: <%= task.status %></span>
             </li>
           <% end %>
         </ul>
       </div>
     </div>
 
-    <div class="card shadow animated fadeIn">
-      <div class="card-header" style="background-color: #007bff; color: #ffffff;">
+    <div class="card shadow animated">
+      <div class="card-header bg-secondary text-white">
         All Reviews
       </div>
-      <div class="card-body" style="background-color: #f8f9fa;">
+      <div class="card-body">
         <ul class="list-group">
           <% Review.all.each do |review| %>
-            <li class="list-group-item" style="background-color: #fdfdfe;">
+            <li class="list-group-item list-group-item-light">
               Review for <%= link_to review.task.title, task_path(review.task) %>: 
-              <span class="badge" style="background-color: #28a745; color: #ffffff;"><%= review.rating %> stars</span> - <%= review.comment %>
+              <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
             </li>
           <% end %>
         </ul>
@@ -49,9 +49,9 @@
     </div>
 
     <div class="mt-5">
-      <h4 style="color: #0056b3;">Manage Users</h4>
+      <h4>Manage Users</h4>
       <table class="table table-bordered table-hover">
-        <thead class="thead-dark">
+        <thead class="thead-light">
           <tr>
             <th>Email</th>
             <th>Role</th>
@@ -64,79 +64,80 @@
               <td><%= user.email %></td>
               <td><%= user.role.capitalize %></td>
               <td>
-                <%= link_to 'Delete', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm', style: "background-color: #dc3545;" %>
+                <%= link_to 'Delete', admin_destroy_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
-      <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-success', style: "background-color: #28a745;" %>
+      <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-primary' %>
     </div>
 
    <% elsif current_user.client? %>
-  <!-- Client Dashboard Content -->
-  <div class="card shadow mb-4 animated fadeIn">
-    <div class="card-header py-3" style="background-color: #007bff; color: #ffffff;">
-      <h6 class="m-0 font-weight-bold">Client Dashboard</h6>
-    </div>
-    <div class="card-body" style="background-color: #f8f9fa;">
-      <%= link_to 'Create New Task', new_task_path, class: "btn mb-3", style: "background-color: #28a745; color: #ffffff;" %>
+    <!-- Client Dashboard Content -->
+<div class="card shadow mb-4 animated fadeIn">
+  <div class="card-header py-3 bg-dark text-white">
+    <h6 class="m-0 font-weight-bold">Client Dashboard</h6>
+  </div>
+  <div class="card-body">
+    <%= link_to 'Create New Task', new_task_path, class: "btn btn-primary mb-3" %>
 
-      <% Task.statuses.keys.each do |status| %>
-        <div class="my-4">
-          <h5 style="color: #0056b3;">Your Tasks - <%= status.titleize %></h5>
-          <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-              <thead style="background-color: #343a40; color: #ffffff;">
+    <% Task.statuses.keys.each do |status| %>
+      <div class="my-4">
+        <h5 class="text-primary mb-3">Your Tasks - <%= status.titleize %></h5>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Budget</th>
+                <th>Category</th>
+                <th>Deadline</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% current_user.tasks_as_client.where(status: status).each do |task| %>
                 <tr>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Budget</th>
-                  <th>Category</th>
-                  <th>Deadline</th>
-                  <th>Status</th>
+                  <td><%= link_to task.title, task_path(task), class: 'text-primary' %></td>
+                  <td><%= task.description %></td>
+                  <td><%= number_to_currency(task.budget) %></td>
+                  <td><%= task.category %></td>
+                  <td><%= task.deadline.strftime('%b %d, %Y') %></td>
+                  <td><span class="badge <%= badge_color_for_status(task.status) %>"><%= task.status.titleize %></span></td>
                 </tr>
-              </thead>
-              <tbody>
-                <% current_user.tasks_as_client.where(status: status).each do |task| %>
-                  <tr>
-                    <td><%= link_to task.title, task_path(task), class: 'text-primary', style: 'color: #007bff;' %></td>
-                    <td><%= task.description %></td>
-                    <td><%= number_to_currency(task.budget) %></td>
-                    <td><%= task.category %></td>
-                    <td><%= task.deadline.strftime('%b %d, %Y') %></td>
-                    <td><span class="badge <%= badge_color_for_status(task.status) %>"><%= task.status.titleize %></span></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+              <% end %>
+            </tbody>
+          </table>
         </div>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   </div>
+</div>
 
-  <!-- Your Reviews Section -->
-  <div class="card shadow mb-4 animated fadeIn">
-    <div class="card-header py-3" style="background-color: #007bff; color: #ffffff;">
-      <h6 class="m-0 font-weight-bold">Your Reviews</h6>
-    </div>
-    <div class="card-body" style="background-color: #f8f9fa;">
-      <ul class="list-group list-group-flush">
-        <% if current_user.reviews.any? %>
-          <% current_user.reviews.each do |review| %>
-            <li class="list-group-item" style="background-color: #fdfdfe;">
-              Review for <%= link_to review.task.title, task_path(review.task), class: 'text-primary', style: 'color: #007bff;' %>
-              <span class="badge <%= badge_color_for_rating(review.rating) %> badge-pill"><%= review.rating %> stars</span> - <%= review.comment %>
-            </li>
-          <% end %>
-        <% else %>
-          <li class="list-group-item" style="background-color: #fdfdfe;">No reviews available.</li>
-        <% end %>
-      </ul>
-    </div>
+<!-- Your Reviews Section -->
+<div class="card shadow mb-4 animated fadeIn">
+  <div class="card-header py-3 bg-dark text-white">
+    <h6 class="m-0 font-weight-bold">Your Reviews</h6>
   </div>
-<% end %>
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <% if current_user&.respond_to?(:reviews) && current_user.reviews.any? %>
+        <% current_user.reviews.each do |review| %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            Review for <%= link_to review.task.title, task_path(review.task), class: 'text-primary' %>
+            <span class="badge <%= badge_color_for_rating(review.rating) %> badge-pill"><%= review.rating %> stars</span> - <%= review.comment %>
+          </li>
+        <% end %>
+      <% else %>
+        <li class="list-group-item">No reviews available.</li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+
   <% elsif current_user.freelancer? %>
     <!-- Freelancer Dashboard Content -->
     <div class="card shadow mb-4 animated">
