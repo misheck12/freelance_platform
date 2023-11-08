@@ -181,93 +181,58 @@
 
   <% elsif current_user.freelancer? %>
     <!-- Freelancer Dashboard Content -->
-    <div class="card shadow mb-4 animated">
-      <div class="card-header bg-secondary text-white">
-        Freelancer Dashboard
-      </div>
-      <div class="card-body">
-        <h4 class="text-secondary">Available Tasks</h4>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Budget</th>
-              <th>Category</th>
-              <th>Deadline</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% Task.open_tasks.each do |task| %>
-              <tr>
-                <td><%= link_to task.title, task_path(task) %></td>
-                <td><%= task.description %></td>
-                <td><%= task.budget %></td>
-                <td><%= task.category%></td>
-                <td><%= task.deadline %></td>
-                <td><%= task.status %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Tasks You're Working On -->
-<div class="card shadow mb-4 animated">
+   <!-- Freelancer Dashboard Content -->
+<div class="card shadow mb-4 animated fadeIn">
   <div class="card-header bg-secondary text-white">
-    Tasks You're Working On
+    <h6 class="m-0 font-weight-bold">Freelancer Dashboard</h6>
   </div>
   <div class="card-body">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Budget</th>
-          <th>Category</th>
-          <th>Deadline</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% current_user.tasks_as_freelancer.each do |task| %>
+    <!-- Available Tasks Section -->
+    <h4 class="text-secondary mb-3">Available Tasks</h4>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <!-- ... existing code for the table ... -->
+      </table>
+    </div>
+
+    <!-- Tasks You're Working On Section -->
+    <h4 class="text-secondary mt-4 mb-3">Tasks You're Working On</h4>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <!-- ... existing code for the table ... -->
+      </table>
+    </div>
+
+    <!-- Reviews Received Section -->
+    <h4 class="text-secondary mt-4 mb-3">Reviews Received</h4>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
           <tr>
-            <td><%= link_to task.title, task_path(task) %></td>
-            <td><%= task.description %></td>
-            <td><%= task.budget %></td>
-            <td><%= task.category%></td>
-            <td><%= task.deadline %></td>
-            <td><%= task.status %></td>
+            <th>Task Title</th>
+            <th>Rating</th>
+            <th>Comment</th>
+            <th>Reviewed By</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% current_user.reviews_received.includes(:reviewer).each do |review| %>
+            <tr>
+              <td><%= link_to review.task.title, task_path(review.task) %></td>
+              <td><%= review.rating %> stars</td>
+              <td><%= review.comment %></td>
+              <td><%= review.reviewer.email %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
+<!-- Link to go back -->
+<%= link_to 'Back to Dashboard', dashboard_path, class: 'btn btn-secondary mt-3' %>
 
-    <!-- Your Reviews -->
-    <div class="card shadow animated">
-      <div the "card-header bg-secondary text-white">
-        Your Reviews
-      </div>
-      <div class="card-body">
-        <ul class="list-group">
-          <% if current_user&.respond_to?(:reviews) && current_user.reviews.any? %>
-            <% current_user.reviews.each do |review| %>
-              <li class="list-group-item list-group-item-light">
-                Review for <%= link_to review.task.title, task_path(review.task) %>: 
-                <span class="badge bg-light text-secondary"><%= review.rating %> stars</span> - <%= review.comment %>
-              </li>
-            <% end %>
-          <% else %>
-            <p>No reviews available.</p>
-          <% end %>
-        </ul>
-      </div>
-    </div>
   <% end %>
 
   <style>
@@ -285,5 +250,28 @@
       animation-name: fadeIn;
       animation-duration: 1.5s;
     }
+     .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, .05);
+  }
+  .btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+  .btn-secondary:hover {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62;
+  }
+  .mt-3 {
+    margin-top: 1rem;
+  }
+  .mb-3 {
+    margin-bottom: 1rem;
+  }
+  .card-header {
+    background-color: #6c757d;
+    color: white;
+  }
   </style>
 </div>
