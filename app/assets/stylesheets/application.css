@@ -123,3 +123,15 @@
    }
  }
  
+
+ .login-container {
+  width: 100vw; /* Full width of the viewport */
+  height: 100vh; /* Full height of the viewport */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('<%= image_path('login.png') %>');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+}

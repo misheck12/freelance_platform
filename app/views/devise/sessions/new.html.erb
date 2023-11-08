@@ -1,4 +1,4 @@
-<div class="login-container" style="background-image: url('<%= image_path('login.png') %>'); background-size: cover; background-position: center;">
+<div class="login-container" style="background-image: url('<%= image_path('login.png') %>'); background-size: cover; background-repeat: no-repeat; background-position: center;">
   <div class="login-form">
     <h2 style="text-align: center; margin-bottom: 1.5rem;">Log in</h2>
 
@@ -33,11 +33,12 @@
 
 <style>
   .login-container {
-    width: 100vw;
+    width: auto;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden; /* This will prevent any overflow from the container */
   }
 
   .login-form {
@@ -47,6 +48,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     width: 100%;
+    margin: auto;
+    background: rgba(250, 245, 235, 0.85); /* A light background color to give a parchment-like feel */
+
   }
 
   .form-control {
@@ -65,5 +69,10 @@
   
   .form-horizontal .checkbox {
     padding-left: 20px;
+  }
+
+  .btn-primary:hover {
+  background-color: #8d6e63; /* A darker, richer brown for the hover state */
+  border-color: #8d6e63;
   }
 </style>
