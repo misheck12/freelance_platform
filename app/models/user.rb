@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  # Devise modules
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -11,7 +12,10 @@ class User < ApplicationRecord
   has_many :tasks_as_freelancer, class_name: 'Task', foreign_key: 'freelancer_id'
   has_many :given_reviews, class_name: 'Review', foreign_key: 'reviewer_id'
   
+  # This new association will allow freelancers to access the reviews they've received
+  has_many :reviews_received, through: :tasks_as_freelancer, source: :reviews
 
+  # Callbacks
   after_initialize :set_default_role, if: :new_record?
 
   private
