@@ -1,21 +1,61 @@
+<!-- app/views/reviews/new.html.erb -->
 <h2>New Review for <%= @task.title %></h2>
 
+<!-- form_with creates a form for the @review associated with @task -->
 <%= form_with(model: [@task, @review], local: true) do |f| %>
+  <!-- Render error messages if there are any -->
   <%= render "devise/shared/error_messages", resource: @review %>
 
+  <!-- Field for the review rating -->
   <div class="field">
     <%= f.label :rating %><br />
-    <%= f.number_field :rating, min: 1, max: 5, required: true %>
+    <!-- number_field for rating, restricted to values between 1 and 5 -->
+    <%= f.number_field :rating, in: 1..5, required: true, class: 'form-control' %>
   </div>
 
+  <!-- Field for the review comment -->
   <div class="field">
     <%= f.label :comment %><br />
-    <%= f.text_area :comment, maxlength: 500 %>
+    <!-- text_area for comment, with a maximum length of 500 characters -->
+    <%= f.text_area :comment, maxlength: 500, class: 'form-control' %>
   </div>
 
+  <!-- Submit button for the form -->
   <div class="actions">
     <%= f.submit "Create Review", class: 'btn btn-primary' %>
   </div>
 <% end %>
 
+<!-- Link to go back to the task -->
 <%= link_to 'Back to Task', task_path(@task), class: 'btn btn-secondary' %>
+
+<!-- Styling for the form -->
+<style>
+  .field {
+    margin-bottom: 1em;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+
+  .btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+
+  .actions {
+    margin-top: 1em;
+  }
+</style>
