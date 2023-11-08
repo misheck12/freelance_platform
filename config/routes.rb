@@ -1,33 +1,35 @@
 Rails.application.routes.draw do
+  # Define root path
   root 'dashboard#show'
 
+  # Dashboard routes
   get 'dashboard/show'
+  get 'dashboard', to: 'dashboard#show', as: 'dashboard'
 
-  # Devise routes with custom controllers
+  # Devise routes with custom controllers for user sessions and registrations
   devise_for :users, controllers: { registrations: 'users/registrations' }
 
-  # Custom routes for freelancer registration by admin within Devise scope
+  # Custom routes within Devise for handling specific user roles like freelancer registration by admin
   devise_scope :user do
     get 'users/new_freelancer', to: 'users/registrations#new_freelancer', as: :new_freelancer_registration
     post 'users/create_freelancer', to: 'users/registrations#create_freelancer', as: :create_freelancer_registration
     delete 'users/:id', to: 'users/registrations#destroy', as: :admin_destroy_user
+    get '/users/sign_out', to: 'devise/sessions#destroy'
   end
 
-  # Task and nested reviews routes
+  # Task routes with custom member routes for actions like accept and complete
   resources :tasks do
     member do
       post 'accept'
       post 'complete'
     end
-    resources :reviews, only: [:new, :create] # Nested reviews under tasks
+
+    # Nested reviews routes under tasks for new and create actions
+    resources :reviews, only: [:new, :create]
   end
 
-  # You may also need to show, edit, update, or destroy reviews independently of tasks
-  resources :reviews, only: [:show, :edit, :update, :destroy]
+  # Independent reviews routes for other actions
+  resources :reviews, except: [:new, :create]
 
-  get 'dashboard', to: 'dashboard#show', as: 'dashboard'
-
-  devise_scope :user do
-    get '/users/sign_out' => 'devise/sessions#destroy'
-  end
+  # Any other routes...
 end
