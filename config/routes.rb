@@ -28,8 +28,8 @@ Rails.application.routes.draw do
     resources :reviews, only: [:new, :create]
   end
 
-  # Independent reviews routes for other actions
-  resources :reviews, except: [:new, :create]
+  # Independent reviews routes for other actions, making sure not to include :new and :create
+  resources :reviews, only: [:show, :edit, :update, :destroy]
 
   # Any other routes...
 end
