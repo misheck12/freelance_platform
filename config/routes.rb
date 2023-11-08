@@ -13,23 +13,21 @@ Rails.application.routes.draw do
     delete 'users/:id', to: 'users/registrations#destroy', as: :admin_destroy_user
   end
 
-  # Other application routes
+  # Task and nested reviews routes
   resources :tasks do
     member do
-      post 'accept'  # This creates a route for a POST request to /tasks/:id/accept
-      post 'complete'  # This defines the route for completing a task
+      post 'accept'
+      post 'complete'
     end
+    resources :reviews, only: [:new, :create] # Nested reviews under tasks
   end
-  resources :reviews, only: [:show, :new, :create, :edit, :update, :destroy]
+
+  # You may also need to show, edit, update, or destroy reviews independently of tasks
+  resources :reviews, only: [:show, :edit, :update, :destroy]
 
   get 'dashboard', to: 'dashboard#show', as: 'dashboard'
 
-    # Devise routes
-    devise_scope :user do
-      get '/users/sign_out' => 'devise/sessions#destroy'
-    end
-
-  # It seems you have this route for user deletion, but it might conflict with Devise's own routes.
-  # If you have a custom method for user deletion outside of Devise, consider renaming the route/path.
-  # resources :users, only: [:destroy] # Consider commenting out or removing this line if it's not used elsewhere.
+  devise_scope :user do
+    get '/users/sign_out' => 'devise/sessions#destroy'
+  end
 end
