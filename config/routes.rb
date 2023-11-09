@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :payments
   # Define root path
   root 'dashboard#show'
 
