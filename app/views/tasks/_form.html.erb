@@ -1,8 +1,8 @@
-<%= form_with(model: task) do |form| %>
+<%= form_with(model: task, html: { class: 'needs-validation', novalidate: true }) do |form| %>
   <% if task.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
-      <ul>
+    <div id="error_explanation" class="alert alert-danger" role="alert">
+      <h4 class="alert-heading"><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h4>
+      <ul class="mb-0">
       <% task.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
@@ -13,32 +13,54 @@
   <!-- Hidden field for the user (client) ID -->
   <%= form.hidden_field :client_id, value: current_user.id %>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+  <div class="field form-group">
+    <%= form.label :title, class: 'form-label' %>
+    <%= form.text_field :title, class: 'form-control' %>
   </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+  <div class="field form-group">
+    <%= form.label :description, class: 'form-label' %>
+    <%= form.text_area :description, class: 'form-control' %>
   </div>
 
-  <div class="field">
-    <%= form.label :budget %>
-    <%= form.number_field :budget, step: 0.01 %>
+  <div class="field form-group">
+    <%= form.label :budget, class: 'form-label' %>
+    <%= form.number_field :budget, step: 0.01, class: 'form-control' %>
   </div>
 
-  <div class="field">
-  <%= form.label :category%>
-  <%= form.text_field :description%>
+  <div class="field form-group">
+    <%= form.label :category, class: 'form-label' %>
+    <%= form.text_field :category, class: 'form-control' %>
   </div>
 
-  <div class="field">
-    <%= form.label :deadline %>
-    <%= form.datetime_select :deadline %>
+  <div class="field form-group">
+    <%= form.label :deadline, class: 'form-label' %>
+    <%= form.datetime_select :deadline, class: 'form-control' %>
   </div>
 
-  <div class="actions">
-    <%= form.submit %>
+  <div class="actions mt-3">
+    <%= form.submit class: 'btn btn-primary' %>
   </div>
 <% end %>
+
+<!-- Include this script tag if you want to use Bootstrap’s form validation -->
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function () {
+    'use strict'
+    window.addEventListener('load', function () {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation')
+      // Loop over them and prevent submission
+      Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+    }, false)
+  })()
+</script>
