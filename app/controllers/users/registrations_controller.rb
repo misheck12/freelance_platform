@@ -1,15 +1,16 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create, :create_freelancer]
+  before_action :configure_account_update_params, only: [:update]
   before_action :ensure_admin, only: [:new_freelancer, :create_freelancer]
 
-  # GET /users/sign_up
+  # GET /resource/sign_up
   def new
-    super  # This calls Devise's default new method
+    super
   end
 
-  # POST /users
+  # POST /resource
   def create
-    super  # This calls Devise's default create method
+    super
   end
 
   # GET /users/new_freelancer
@@ -21,7 +22,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /users/create_freelancer
   def create_freelancer
     build_resource(sign_up_params.merge(role: :freelancer))
-
     resource.save
     yield resource if block_given?
     if resource.persisted?
@@ -47,11 +47,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :photo, :email, :password, :password_confirmation])
   end
 
+  def configure_account_update_params
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :photo])
+  end
+
   private
 
   def ensure_admin
-    unless current_user&.admin?
-      redirect_to root_path, alert: 'You are not authorized to perform this action.'
-    end
+    redirect_to root_path, alert: 'You are not authorized to perform this action.' unless current_user&.admin?
   end
 end
