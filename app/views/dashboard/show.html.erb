@@ -1,5 +1,5 @@
 <div class="container py-5">
-  <h3 class="mb-4 text-secondary">Welcome, <%= current_user.email %>!</h3>
+  <h3 class="mb-4 text-secondary">Welcome, <%= current_user.name %>!</h3>
 
   <% if current_user.admin? %>
     <!-- Admin Dashboard Content -->
