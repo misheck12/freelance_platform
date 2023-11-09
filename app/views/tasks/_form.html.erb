@@ -1,44 +1,76 @@
-<%= form_with(model: task) do |form| %>
+<%= form_with(model: task, local: true, html: { class: 'needs-validation', novalidate: true, multipart: true }) do |form| %>
   <% if task.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+    <div id="error_explanation" class="alert alert-danger" role="alert">
+      <h4 class="alert-heading"><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h4>
       <ul>
-      <% task.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
-  <!-- Hidden field for the user (client) ID -->
   <%= form.hidden_field :client_id, value: current_user.id %>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
+  <div class="container mt-4">
+    <h1 class="text-center mb-4">Create a New Task</h1>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
-  </div>
+    <div class="form-group">
+      <%= form.label :title %>
+      <%= form.text_field :title, class: 'form-control', placeholder: 'Enter a catchy title for your task' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :budget %>
-    <%= form.number_field :budget, step: 0.01 %>
-  </div>
+    <div class="form-group">
+      <%= form.label :description %>
+      <%= form.text_area :description, class: 'form-control', rows: 3, placeholder: 'What needs to be done?' %>
+    </div>
 
-  <div class="field">
-  <%= form.label :category%>
-  <%= form.text_field :description%>
-  </div>
+    <div class="form-group">
+      <label for="pages">Number of pages:</label>
+      <input type="number" id="pages" name="pages" class="form-control" min="1" value="1" onchange="calculatePrice()">
+    </div>
 
-  <div class="field">
-    <%= form.label :deadline %>
-    <%= form.datetime_select :deadline %>
-  </div>
+    <div class="form-group">
+      <label for="price">Price ($):</label>
+      <input type="text" id="price" name="price" class="form-control" disabled>
+    </div>
 
-  <div class="actions">
-    <%= form.submit %>
+    <div class="form-group">
+      <%= form.label :category %>
+      <%= form.text_field :category, class: 'form-control', placeholder: 'e.g. Web Development' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :deadline %>
+      <%= form.datetime_select :deadline, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :attachment %>
+      <%= form.file_field :attachment, direct_upload: true, class: 'form-control-file' %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit 'Create Task', class: 'btn btn-primary btn-block' %>
+    </div>
   </div>
 <% end %>
+
+<script>
+  const COST_PER_PAGE = 30; // Change this to your actual cost per page
+
+  function calculatePrice() {
+    const pages = document.getElementById("pages").value;
+    const price = pages * COST_PER_PAGE;
+    document.getElementById("price").value = price.toFixed(2);
+    
+    // Update the hidden budget field in the form
+    const hiddenBudgetInput = document.querySelector('input[name="task[budget]"]');
+    if (hiddenBudgetInput) {
+      hiddenBudgetInput.value = price.toFixed(2);
+    }
+  }
+
+  // Initialize price on load
+  document.addEventListener('DOMContentLoaded', calculatePrice);
+</script>
