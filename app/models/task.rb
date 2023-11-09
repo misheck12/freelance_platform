@@ -19,6 +19,8 @@ class Task < ApplicationRecord
   belongs_to :client, class_name: 'User'
   belongs_to :freelancer, class_name: 'User', optional: true
   has_many :reviews, dependent: :destroy
+  has_many :payments
+
 
   private
 
