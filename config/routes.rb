@@ -28,6 +28,9 @@ Rails.application.routes.draw do
     # Nested reviews routes under tasks for 'new' and 'create' actions
     resources :reviews, only: [:new, :create]
   end
+  
+  resources :payments, only: [:new, :create, :show]
+  end
 
   # Independent routes for reviews, excluding 'new' and 'create'
   # as they are already defined within the nested resources
