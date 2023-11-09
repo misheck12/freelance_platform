@@ -83,14 +83,16 @@
   <div class="card-body">
     <%= link_to 'Create New Task', new_task_path, class: "btn btn-primary mb-3" %>
 
-      <div class="payments-info mb-4">
-        <h5 class="text-primary">Payments</h5>
-        <p>For payments, you can transfer funds to the following mobile numbers:</p>
-        <ul>
-          <li>MTN: +260960231978</li>
-          <li>Airtel: +260777945779</li>
-        </ul>
-      </div>
+<!-- Payment Information Section -->
+<div class="payments-info mb-4 p-3 border rounded">
+  <h5 class="text-primary">Payments</h5>
+  <p>For payments, you can transfer funds to the following mobile numbers:</p>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">MTN: <span class="font-weight-bold">+260960231978</span></li>
+    <li class="list-group-item">Airtel: <span class="font-weight-bold">+260777945779</span></li>
+  </ul>
+</div>
+
 
     <!-- Tasks Section -->
     <% Task.statuses.keys.each do |status| %>
