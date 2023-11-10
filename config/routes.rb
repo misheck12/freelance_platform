@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :payments
   # Define root path
   root 'dashboard#show'
 
@@ -29,12 +28,13 @@ Rails.application.routes.draw do
     resources :reviews, only: [:new, :create]
   end
   
+  # Routes for payments
   resources :payments, only: [:new, :create, :show]
-  end
 
   # Independent routes for reviews, excluding 'new' and 'create'
   # as they are already defined within the nested resources
   resources :reviews, only: [:show, :edit, :update, :destroy]
 
   # Any additional routes can be added below
+  # Make sure there is no extra 'end' below this comment
 end
