@@ -17,28 +17,20 @@ Rails.application.routes.draw do
     get '/users/sign_out', to: 'devise/sessions#destroy'
   end
 
-  # Routes for tasks, with custom member routes for 'accept' and 'complete' actions
-  Rails.application.routes.draw do
-    # ... other routes ...
-  
-    resources :tasks do
-      member do
-        post 'accept'
-        post 'complete'
-      end
-  
-      resources :reviews, only: [:new, :create]
-      
-      # Nesting payments inside tasks
-      resources :payments, only: [:new, :create, :show]
+  # Routes for tasks
+  resources :tasks do
+    member do
+      post 'accept'
+      post 'complete'
     end
-  
-    # If you have independent payment routes, you might want to remove or adjust them
-    # resources :payments, only: [:new, :create, :show]
-  
-    resources :reviews, only: [:show, :edit, :update, :destroy]
-  
-    # ... other routes ...
+
+    # Nested routes for reviews and payments within tasks
+    resources :reviews, only: [:new, :create]
+    resources :payments, only: [:new, :create, :show]
   end
-  
+
+  # Independent routes for reviews
+  resources :reviews, only: [:show, :edit, :update, :destroy]
+
+  # Any additional routes can be added below
 end
