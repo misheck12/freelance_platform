@@ -1,8 +1,7 @@
-<%= form_with(model: payment) do |form| %>
+<%= form_with(model: [task, payment], local: true) do |form| %>
   <% if payment.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
-
       <ul>
         <% payment.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,27 +10,17 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div>
-    <%= form.label :task_id, style: "display: block" %>
-    <%= form.text_field :task_id %>
-  </div>
-
-  <div>
-    <%= form.label :transaction_id, style: "display: block" %>
+  <div class="field">
+    <%= form.label :transaction_id %>
     <%= form.text_field :transaction_id %>
   </div>
 
-  <div>
-    <%= form.label :status, style: "display: block" %>
-    <%= form.number_field :status %>
+  <div class="field">
+    <%= form.label :receipt, "Upload Receipt" %>
+    <%= form.file_field :receipt %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="actions">
+    <%= form.submit "Submit Payment" %>
   </div>
 <% end %>
