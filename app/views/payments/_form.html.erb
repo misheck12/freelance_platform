@@ -1,37 +1,24 @@
-<%= form_with(model: payment) do |form| %>
+<%= form_with(model: [task, payment], local: true) do |form| %>
   <% if payment.errors.any? %>
-    <div style="color: red">
+    <div id="error_explanation">
       <h2><%= pluralize(payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
-
       <ul>
-        <% payment.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <% payment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
+  <div class="field">
+    <%= form.label :transaction_id %>
+    <%= form.text_field :transaction_id, class: 'form-control', placeholder: 'Enter your transaction ID' %>
   </div>
 
-  <div>
-    <%= form.label :task_id, style: "display: block" %>
-    <%= form.text_field :task_id %>
+  <div class="field">
+    <%= form.label :payment_proof, "Upload Payment Screenshot" %>
+    <%= form.file_field :payment_proof, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :transaction_id, style: "display: block" %>
-    <%= form.text_field :transaction_id %>
-  </div>
-
-  <div>
-    <%= form.label :status, style: "display: block" %>
-    <%= form.number_field :status %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  <%= form.submit "Submit Payment", class: 'btn btn-primary' %>
 <% end %>
