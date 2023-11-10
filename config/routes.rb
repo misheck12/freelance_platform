@@ -18,23 +18,27 @@ Rails.application.routes.draw do
   end
 
   # Routes for tasks, with custom member routes for 'accept' and 'complete' actions
-  resources :tasks do
-    member do
-      post 'accept'  # Defines the route for the 'accept' action on individual tasks
-      post 'complete'  # Defines the route for the 'complete' action on individual tasks
+  Rails.application.routes.draw do
+    # ... other routes ...
+  
+    resources :tasks do
+      member do
+        post 'accept'
+        post 'complete'
+      end
+  
+      resources :reviews, only: [:new, :create]
+      
+      # Nesting payments inside tasks
+      resources :payments, only: [:new, :create, :show]
     end
-
-    # Nested reviews routes under tasks for 'new' and 'create' actions
-    resources :reviews, only: [:new, :create]
+  
+    # If you have independent payment routes, you might want to remove or adjust them
+    # resources :payments, only: [:new, :create, :show]
+  
+    resources :reviews, only: [:show, :edit, :update, :destroy]
+  
+    # ... other routes ...
   end
   
-  # Routes for payments
-  resources :payments, only: [:new, :create, :show]
-
-  # Independent routes for reviews, excluding 'new' and 'create'
-  # as they are already defined within the nested resources
-  resources :reviews, only: [:show, :edit, :update, :destroy]
-
-  # Any additional routes can be added below
-  # Make sure there is no extra 'end' below this comment
 end
