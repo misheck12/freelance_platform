@@ -11,7 +11,7 @@ class PaymentsController < ApplicationController
   # POST /tasks/:task_id/payments
   def create
     # Build a payment for the task belonging to the current user
-    @payment = @task.build_payment(payment_params.merge(user: current_user))
+    @payment = @task.build_payment(payment_params.merge(user_id: current_user.id))
 
     if @payment.save
       # Redirect to the task with a success notice
