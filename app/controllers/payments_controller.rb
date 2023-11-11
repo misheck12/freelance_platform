@@ -7,15 +7,15 @@ class PaymentsController < ApplicationController
   end
 
   def create
-    @payment = @task.payments.build(payment_params) # Builds a payment associated with the task
-    @payment.user = current_user # Assigns the current user to the payment
-
+    @payment = @task.payments.build(payment_params)
+    @payment.user_id = current_user.id # Assigns the current user's ID to the payment
+  
     if @payment.save
       redirect_to @task, notice: 'Payment was successfully recorded.'
     else
       render :new
     end
-  end
+  end  
 
   private
 
