@@ -31,7 +31,7 @@ class PaymentsController < ApplicationController
 
   # Define permitted parameters for payments
   def payment_params
-    params.require(:payment).permit(:transaction_id, :payment_proof, :user_id)
+    params.require(:payment).permit(:transaction_id, :payment_proof, :status, :user_id)
     # Ensure :payment_proof is the correct field for the file upload
   end
 end
