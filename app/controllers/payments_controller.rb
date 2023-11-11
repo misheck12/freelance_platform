@@ -10,17 +10,16 @@ class PaymentsController < ApplicationController
 
   # POST /tasks/:task_id/payments
   def create
-    # Build a payment for the task belonging to the current user
-    @payment = @task.build_payment(payment_params.merge(user: current_user))
-
+    # Initialize a payment for the task with the current_user's id
+    @payment = @task.build_payment(payment_params.merge(user_id: current_user.id))
+  
     if @payment.save
-      # Redirect to the task with a success notice
       redirect_to @task, notice: 'Payment was successfully created.'
     else
-      # Render the 'new' template if the payment could not be saved
       render :new
     end
   end
+  
 
   private
 
