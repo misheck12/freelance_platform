@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :tasks_as_freelancer, class_name: 'Task', foreign_key: 'freelancer_id'
   has_many :given_reviews, class_name: 'Review', foreign_key: 'reviewer_id'
   has_one_attached :photo
+  has_many :payments 
 
   
   # This new association will allow freelancers to access the reviews they've received
