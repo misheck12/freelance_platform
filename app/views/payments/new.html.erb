@@ -1,9 +1,25 @@
-<h1>New payment</h1>
+<%= form_with model: @payment, url: task_payments_path(@task), local: true, html: { multipart: true } do |form| %>
+  <% if @payment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
 
-<%= render 'form', task: @task, payment: @payment %>
+      <ul>
+        <% @payment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-<br>
+  <div class="field">
+    <%= form.label :transaction_id, 'Transaction ID' %>
+    <%= form.text_field :transaction_id, required: true %>
+  </div>
 
-<div>
-<%= link_to "Back to Task", task_path(@task) %>
-</div>
+  <div class="field">
+    <%= form.label :payment_proof, 'Upload Payment Proof' %>
+    <%= form.file_field :payment_proof, direct_upload: true %>
+  </div>
+
+  <%= form.submit "Submit Payment", class: 'btn btn-primary' %>
+<% end %>
