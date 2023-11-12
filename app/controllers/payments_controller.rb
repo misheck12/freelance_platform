@@ -1,30 +1,33 @@
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_task
+  before_action :set_task, only: [:new, :create]
 
   def new
-    @payment = Payment.new # Initializes a new payment
+    # Initialize a new payment for the task
+    @payment = Payment.new
   end
 
   def create
-    @payment = @task.payments.build(payment_params)
-    @payment.user_id = current_user.id # Assigns the current user's ID to the payment
-  
+    # Build a payment associated with the current user and the task
+    @payment = Payment.new(payment_params)
+    @payment.task = @task
+    @payment.user = current_user
+
     if @payment.save
-      redirect_to @task, notice: 'Payment was successfully recorded.'
+      redirect_to task_path(@task), notice: 'Payment was successfully created.'
     else
       render :new
     end
-  end  
+  end
 
   private
 
   def set_task
-    @task = Task.find(params[:task_id]) # Finds the task based on the passed task_id
+    @task = Task.find(params[:task_id])
   end
 
   def payment_params
-    params.require(:payment).permit(:transaction_id, :payment_proof, :status)
-    # Ensure :payment_proof is set up to handle file uploads if it's a file field
+    params.require(:payment).permit(:transaction_id, :status)
+    # Add :payment_proof if you're using Active Storage for file uploads
   end
 end
