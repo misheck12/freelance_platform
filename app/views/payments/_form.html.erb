@@ -10,6 +10,8 @@
     </div>
   <% end %>
 
+   <%= form.hidden_field :user_id, value: current_user.id %>
+
   <div class="field">
     <%= form.label :transaction_id %>
     <%= form.text_field :transaction_id, class: 'form-control', placeholder: 'Enter your transaction ID' %>
