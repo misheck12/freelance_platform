@@ -27,7 +27,7 @@ class PaymentsController < ApplicationController
   end
 
   def payment_params
-    params.require(:payment).permit(:transaction_id, :status)
-    # Add :payment_proof if you're using Active Storage for file uploads
+    params.require(:payment).permit(:transaction_id, :status, :payment_proof)
   end
+  
 end
