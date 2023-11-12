@@ -8,17 +8,28 @@ class PaymentsController < ApplicationController
   end
 
   def create
-    # Build a payment associated with the current user and the task
-    @payment = Payment.new(payment_params)
-    @payment.task = @task
+    @payment = @task.build_payment(payment_params)
+    
+    # Make sure that current_user is not nil
+    if current_user.nil?
+      return redirect_to new_user_session_path, alert: 'You must be signed in to make a payment.'
+    end
+    
     @payment.user = current_user
-
+  
     if @payment.save
       redirect_to task_path(@task), notice: 'Payment was successfully created.'
     else
       render :new
     end
   end
+  
+  private
+  
+  def payment_params
+    params.require(:payment).permit(:transaction_id, :payment_proof, :status)
+  end
+  
 
   private
 
