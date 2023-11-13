@@ -26,7 +26,8 @@
         <tr>
           <th scope="row"><%= payment.id %></th>
           <td><%= payment.task.title %></td>
-          <td><%= number_to_currency(payment.amount) %></td>
+          <!-- Display the budget from the task as the payment amount -->
+          <td><%= number_to_currency(payment.task.budget) %></td>
           <td><%= payment.transaction_id %></td>
           <td>
             <%= link_to 'Accept', accept_payment_path(payment), method: :patch, class: 'btn btn-success' %>
@@ -39,7 +40,7 @@
 <% else %>
   <p>No pending payments at this time.</p>
 <% end %>
-</div>
+
 
 <!-- Add corresponding routes and controller actions for accept and reject -->
 
