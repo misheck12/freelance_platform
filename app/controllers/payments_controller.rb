@@ -1,35 +1,39 @@
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: [:new, :create]
+  before_action :set_payment, only: [:accept, :reject]
 
   def new
-    # Initialize a new payment for the task
     @payment = Payment.new
   end
 
   def create
-    @payment = @task.build_payment(payment_params)
-    
-    # Make sure that current_user is not nil
-    if current_user.nil?
-      return redirect_to new_user_session_path, alert: 'You must be signed in to make a payment.'
-    end
-    
+    @payment = @task.payments.new(payment_params)
     @payment.user = current_user
-  
+    @payment.status = :pending # Assuming the status enum includes pending
+
     if @payment.save
-      redirect_to task_path(@task), notice: 'Payment was successfully created.'
+      redirect_to task_path(@task), notice: 'Payment was successfully submitted and is pending approval.'
     else
       render :new
     end
   end
-  
-  private
-  
-  def payment_params
-    params.require(:payment).permit(:transaction_id, :payment_proof, :status)
+
+  def accept
+    if @payment.update(status: :approved)
+      redirect_to dashboard_path, notice: 'Payment was successfully approved.'
+    else
+      redirect_to dashboard_path, alert: 'Payment could not be approved.'
+    end
   end
-  
+
+  def reject
+    if @payment.update(status: :rejected)
+      redirect_to dashboard_path, notice: 'Payment was successfully rejected.'
+    else
+      redirect_to dashboard_path, alert: 'Payment could not be rejected.'
+    end
+  end
 
   private
 
@@ -37,8 +41,11 @@ class PaymentsController < ApplicationController
     @task = Task.find(params[:task_id])
   end
 
-  def payment_params
-    params.require(:payment).permit(:transaction_id, :status, :payment_proof, :user_id)
+  def set_payment
+    @payment = Payment.find(params[:id])
   end
-  
+
+  def payment_params
+    params.require(:payment).permit(:transaction_id, :payment_proof)
+  end
 end
