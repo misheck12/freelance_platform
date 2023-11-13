@@ -7,6 +7,41 @@
       <div class="card-header bg-secondary text-white">
         Admin Dashboard
       </div>
+
+      <!-- Admin Dashboard - Payment Approval Section -->
+<div class="admin-payments-approval">
+  <h3>Pending Payments</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Payment ID</th>
+        <th scope="col">Task</th>
+        <th scope="col">User</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Transaction ID</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @pending_payments.each do |payment| %>
+        <tr>
+          <th scope="row"><%= payment.id %></th>
+          <td><%= payment.task.title %></td>
+          <td><%= payment.user.email %></td>
+          <td><%= number_to_currency(payment.amount) %></td>
+          <td><%= payment.transaction_id %></td>
+          <td>
+            <%= link_to 'Accept', accept_payment_admin_path(payment), method: :patch, class: 'btn btn-success btn-sm' %>
+            <%= link_to 'Reject', reject_payment_admin_path(payment), method: :patch, class: 'btn btn-danger btn-sm' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add corresponding routes and controller actions for accept and reject -->
+
       <div class="card-body">
         <ul class="list-unstyled">
           <li>Total Tasks: <span class="badge bg-light text-secondary"><%= Task.count %></span></li>
