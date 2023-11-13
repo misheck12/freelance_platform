@@ -9,33 +9,36 @@
       </div>
 
       <!-- Admin Dashboard - Payment Approval Section -->
-<div class="admin-payments-approval">
- <h3>Pending Payments</h3>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Task Title</th>
-      <th scope="col">Amount</th>
-      <th scope="col">Transaction ID</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @pending_payments.each do |payment| %>
+<% if @pending_payments.present? %>
+  <h3>Pending Payments</h3>
+  <table class="table">
+    <thead>
       <tr>
-        <th scope="row"><%= payment.id %></th>
-        <td><%= payment.task.title %></td>
-        <td><%= number_to_currency(payment.amount) %></td>
-        <td><%= payment.transaction_id %></td>
-        <td>
-          <%= link_to 'Accept', accept_payment_path(payment), method: :patch, class: 'btn btn-success' %>
-          <%= link_to 'Reject', reject_payment_path(payment), method: :patch, class: 'btn btn-danger' %>
-        </td>
+        <th scope="col">#</th>
+        <th scope="col">Task Title</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Transaction ID</th>
+        <th scope="col">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @pending_payments.each do |payment| %>
+        <tr>
+          <th scope="row"><%= payment.id %></th>
+          <td><%= payment.task.title %></td>
+          <td><%= number_to_currency(payment.amount) %></td>
+          <td><%= payment.transaction_id %></td>
+          <td>
+            <%= link_to 'Accept', accept_payment_path(payment), method: :patch, class: 'btn btn-success' %>
+            <%= link_to 'Reject', reject_payment_path(payment), method: :patch, class: 'btn btn-danger' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No pending payments at this time.</p>
+<% end %>
 </div>
 
 <!-- Add corresponding routes and controller actions for accept and reject -->
