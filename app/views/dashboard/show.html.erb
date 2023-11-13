@@ -26,7 +26,6 @@
         <tr>
           <th scope="row"><%= payment.id %></th>
           <td><%= payment.task.title %></td>
-          <!-- Display the budget from the task as the payment amount -->
           <td><%= number_to_currency(payment.task.budget) %></td>
           <td><%= payment.transaction_id %></td>
           <td>
