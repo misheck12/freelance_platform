@@ -26,7 +26,12 @@ Rails.application.routes.draw do
 
     # Nested routes for reviews and payments within tasks
     resources :reviews, only: [:new, :create]
-    resources :payments, only: [:new, :create, :show]
+    resources :payments, only: [:new, :create, :show] do
+      member do
+        patch 'accept', to: 'payments#accept'
+        patch 'reject', to: 'payments#reject'
+      end
+    end
   end
 
   # Independent routes for reviews
