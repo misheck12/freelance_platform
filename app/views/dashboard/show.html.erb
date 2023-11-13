@@ -2,13 +2,10 @@
   <h3 class="mb-4 text-secondary">Welcome, <%= current_user.name %>!</h3>
 
   <% if current_user.admin? %>
-    <!-- Admin Dashboard Content -->
     <div class="card shadow mb-4 animated">
       <div class="card-header bg-secondary text-white">
         Admin Dashboard
       </div>
-
-      <!-- Admin Dashboard - Payment Approval Section -->
 <% if @pending_payments.present? %>
   <h3>Pending Payments</h3>
   <table class="table">
@@ -39,10 +36,6 @@
 <% else %>
   <p>No pending payments at this time.</p>
 <% end %>
-
-
-<!-- Add corresponding routes and controller actions for accept and reject -->
-
       <div class="card-body">
         <ul class="list-unstyled">
           <li>Total Tasks: <span class="badge bg-light text-secondary"><%= Task.count %></span></li>
