@@ -65,6 +65,26 @@ class TasksController < ApplicationController
     end
   end
 
+  def submit_changes
+    @task = Task.find(params[:id])
+  
+    # Ensure that only the assigned freelancer can submit changes
+    if current_user == @task.freelancer
+      # Assume you have a file field for the revised file in your form named :revised_file
+      if params[:revised_file].present?
+        @task.revised_file.attach(params[:revised_file])
+        @task.update(status: 'review_pending') # Update the task status as needed
+  
+        redirect_to @task, notice: 'Your changes have been submitted successfully.'
+      else
+        redirect_to @task, alert: 'You must attach a file to submit changes.'
+      end
+    else
+      redirect_to @task, alert: 'You are not authorized to perform this action.'
+    end
+  end
+  
+
   private
 
   def set_task
