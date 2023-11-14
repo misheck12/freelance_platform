@@ -26,8 +26,8 @@
           <td><%= number_to_currency(payment.task.budget) %></td>
           <td><%= payment.transaction_id %></td>
           <td>
-            <%= link_to 'Accept', accept_task_payment_path(@task, payment), method: :patch, class: 'btn btn-success' %>
-            <%= link_to 'Reject', reject_task_payment_path(@task, payment), method: :patch, class: 'btn btn-danger' %>
+            <%= link_to 'Accept', accept_task_payment_path(payment.task, payment), method: :patch, class: 'btn btn-success' %>
+            <%= link_to 'Reject', reject_task_payment_path(payment.task, payment), method: :patch, class: 'btn btn-danger' %>
           </td>
         </tr>
       <% end %>
@@ -36,6 +36,7 @@
 <% else %>
   <p>No pending payments at this time.</p>
 <% end %>
+
       <div class="card-body">
         <ul class="list-unstyled">
           <li>Total Tasks: <span class="badge bg-light text-secondary"><%= Task.count %></span></li>
