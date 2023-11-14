@@ -166,7 +166,6 @@
                           <%= link_to 'Pay Again', new_task_payment_path(task), class: 'btn btn-success btn-sm' %>
                         <% elsif task.payment.approved? %>
                           <%= link_to 'View', task_path(task), class: 'btn btn-primary btn-sm' %>
-                          <%= link_to 'Manage', manage_task_path(task), class: 'btn btn-info btn-sm' %>
                         <% end %>
                       <% end %>
                     </td>
