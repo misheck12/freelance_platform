@@ -220,7 +220,7 @@
             <tr>
               <th>Title</th>
               <th>Description</th>
-              <th>Budget</th>
+              <th>Paying</th>
               <th>Category</th>
               <th>Deadline</th>
               <th>Status</th>
@@ -231,7 +231,7 @@
               <tr>
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
-                <td><%= number_to_currency(task.budget) %></td>
+                <td><%= number_to_currency(task.budget * 0.80) %></td>
                 <td><%= task.category %></td>
                 <td><%= l(task.deadline, format: :short) %></td>
                 <td><%= task.status %></td>
@@ -255,7 +255,7 @@
             <tr>
               <th>Title</th>
               <th>Description</th>
-              <th>Budget</th>
+              <th>Paying</th>
               <th>Category</th>
               <th>Deadline</th>
               <th>Status</th>
@@ -266,7 +266,7 @@
               <tr>
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
-                <td><%= number_to_currency(task.budget) %></td>
+                <td><%= number_to_currency(task.budget * 0.80) %></td>
                 <td><%= task.category %></td>
                 <td><%= l(task.deadline, format: :short) %></td>
                 <td><%= task.status %></td>
@@ -291,7 +291,7 @@
               <tr>
                 <th>Title</th>
                 <th>Description</th>
-                <th>Budget</th>
+                <th>Paying</th>
                 <th>Category</th>
                 <th>Deadline</th>
                 <th>Status</th>
@@ -303,7 +303,7 @@
                 <tr>
                   <td><%= link_to task.title, task_path(task) %></td>
                   <td><%= task.description %></td>
-                  <td><%= number_to_currency(task.budget) %></td>
+                  <td><%= number_to_currency(task.budget * 0.80) %></td>
                   <td><%= task.category %></td>
                   <td><%= l(task.deadline, format: :short) %></td>
                   <td><span class="badge badge-warning"><%= task.status %></span></td>
