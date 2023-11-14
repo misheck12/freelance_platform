@@ -19,7 +19,9 @@
             </p>
           <% end %>
           <%= link_to 'Give a Review', new_task_review_path(@task), class: 'btn btn-primary' %>
-          <%= link_to 'Request Changes', changes_task_path(@task), class: 'btn btn-warning', method: :post %>
+<%= form_with url: changes_task_path(@task), method: :post do |form| %>
+  <%= form.submit 'Request Changes', class: 'btn btn-warning' %>
+<% end %>
         <% else %>
           <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %> |
         <% end %>
