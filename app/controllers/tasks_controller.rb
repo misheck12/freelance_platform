@@ -73,7 +73,7 @@ class TasksController < ApplicationController
       # Assume you have a file field for the revised file in your form named :revised_file
       if params[:revised_file].present?
         @task.revised_file.attach(params[:revised_file])
-        @task.update(status: 'review_pending') # Update the task status as needed
+        @task.update(status: 'completed') # Update the task status as needed
   
         redirect_to @task, notice: 'Your changes have been submitted successfully.'
       else
