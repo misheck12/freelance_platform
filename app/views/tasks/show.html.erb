@@ -7,6 +7,7 @@
         <strong>Description:</strong> <%= @task.description %><br>
         <strong>Budget:</strong> <%= number_to_currency(@task.budget) %><br>
         <strong>Category:</strong> <%= @task.category %><br>
+        <strong>attachment:</strong> <%= (@task.attachment) %>
         <strong>Deadline:</strong> <%= @task.deadline.strftime("%B %d, %Y") %><br>
         <strong>Status:</strong> <%= @task.status.titleize %>
       </p>
