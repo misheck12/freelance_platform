@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     member do
       post 'accept'
       post 'complete'
+      post 'changes'
     end
 
     # Nested routes for reviews and payments within tasks
