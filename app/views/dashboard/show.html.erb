@@ -278,6 +278,51 @@
     </div>
   </div>
 
+  <!-- Tasks Requiring Changes Section -->
+  <div class="card shadow mb-4 animated fadeIn">
+    <div class="card-header bg-warning text-dark">
+      <h6 class="m-0 font-weight-bold">Tasks Requiring Changes</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <% if current_user.tasks_requiring_changes.any? %>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Budget</th>
+                <th>Category</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% current_user.tasks_requiring_changes.each do |task| %>
+                <tr>
+                  <td><%= link_to task.title, task_path(task) %></td>
+                  <td><%= task.description %></td>
+                  <td><%= number_to_currency(task.budget) %></td>
+                  <td><%= task.category %></td>
+                  <td><%= l(task.deadline, format: :short) %></td>
+                  <td><span class="badge badge-warning"><%= task.status %></span></td>
+                  <td>
+                    <!-- Add action buttons if needed, e.g., link to view task, submit changes -->
+                    <%= link_to 'View Task', task_path(task), class: 'btn btn-primary btn-sm' %>
+                    <!-- Additional actions can be added here -->
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p>No tasks requiring changes at the moment.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
   <!-- Reviews Received Section -->
   <div class="card shadow animated fadeIn">
     <div class="card-header bg-secondary text-white">
