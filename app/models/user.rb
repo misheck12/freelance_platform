@@ -1,5 +1,11 @@
 class User < ApplicationRecord
-  # Existing code for Devise, enums, associations, and validations...
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  # Enum for roles
+  enum role: { client: 0, admin: 1, freelancer: 2 }
 
   # Associations
   has_many :tasks_as_client, class_name: 'Task', foreign_key: 'client_id'
@@ -7,17 +13,19 @@ class User < ApplicationRecord
   has_many :given_reviews, class_name: 'Review', foreign_key: 'reviewer_id'
   has_one_attached :photo
   has_many :payments, dependent: :destroy
+  
+  # This new association will allow freelancers to access the reviews they've received
   has_many :reviews_received, through: :tasks_as_freelancer, source: :reviews
-
-  # Method to get tasks requiring changes for freelancers
-  def tasks_requiring_changes
-    tasks_as_freelancer.where(status: 'changes_requested')
-  end
 
   # Callbacks
   after_initialize :set_default_role, if: :new_record?
 
   validates :name, presence: true, length: { maximum: 255 } 
+
+  def tasks_requiring_changes
+    tasks_as_freelancer.where(status: 'changes_requested')
+  end
+
 
   private
 
