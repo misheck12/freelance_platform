@@ -7,7 +7,7 @@ class Task < ApplicationRecord
 
   has_one_attached :completed_file
   # Enum for status
-  enum status: { open: 0, in_progress: 1, under_review: 2, completed: 3 }
+  enum status: { open: 0, in_progress: 1, changes_requested: 2, completed: 3 }
 
   # Callback to set default status
   before_validation :set_default_status, on: :create
