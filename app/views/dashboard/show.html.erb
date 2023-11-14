@@ -26,14 +26,8 @@
           <td><%= number_to_currency(payment.task.budget) %></td>
           <td><%= payment.transaction_id %></td>
           <td>
-            <%= form_with url: accept_task_payment_path(payment.task, payment), method: :patch do %>
-            <%= button_to 'Accept', class: 'btn btn-success' %>
-            <% end %>
-
-            <%= form_with url: reject_task_payment_path(payment.task, payment), method: :patch do %>
-            <%= button_to 'Reject', class: 'btn btn-danger' %>
-            <% end %>
-
+            <%= link_to 'Accept', accept_task_payment_path(payment.task, payment), method: :patch, class: 'btn btn-success' %>
+            <%= link_to 'Reject', reject_task_payment_path(payment.task, payment), method: :patch, class: 'btn btn-danger' %>
           </td>
         </tr>
       <% end %>
