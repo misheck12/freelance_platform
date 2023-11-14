@@ -1,79 +1,81 @@
 class TasksController < ApplicationController
-    before_action :set_task, only: [:show, :edit, :update, :destroy]
-  
-    def index
-      @tasks = Task.all
-    end
-  
-    def show
-    end
-  
-    def new
-      @task = Task.new
-    end
-  
-    def create
-      @task = Task.new(task_params)
-      @task.client = current_user  # Set the client to the current user
-    
-      if @task.save
-        redirect_to @task, notice: 'Task was successfully created.'
-      else
-        render :new
-      end
-    end
-    
-  
-    def edit
-    end
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :complete, :request_changes]
 
-    def complete
-      @task = Task.find(params[:id])
-      if @task.update(completed_file: params[:completed_file], status: "completed")
-        redirect_to @task, notice: 'Task was successfully completed.'
-      else
-        render :show, alert: 'Unable to complete task.'
-      end
-    end
-  
-    def update
-      @task = Task.find(params[:id])
-      if @task.update(task_params)
-        # Handle the file attachment here
-        if params[:task][:submission_file]
-          @task.submission_file.attach(params[:task][:submission_file])
-        end
-        redirect_to @task, notice: 'Task was successfully updated.'
-      else
-        render :edit
-      end
-    end
+  def index
+    @tasks = Task.all
+  end
 
-    def accept
-      @task = Task.find(params[:id])
-      if current_user.freelancer? && @task.open?
-        @task.update(freelancer: current_user, status: :in_progress)
-        # redirect to show page with a success message
-        redirect_to @task, notice: 'Task has been accepted!'
-      else
-        # redirect to show page with an error message
-        redirect_to @task, alert: 'You cannot accept this task!'
-      end
-    end
-  
-    def destroy
-      @task.destroy
-      redirect_to tasks_url, notice: 'Task was successfully destroyed.'
-    end
-  
-    private
-  
-    def set_task
-      @task = Task.find(params[:id])
-    end
-  
-    def task_params
-      params.require(:task).permit(:title, :description, :budget, :deadline, :category, :status, :client_id, :freelancer_id, :completed_file)
+  def show
+  end
+
+  def new
+    @task = Task.new
+  end
+
+  def create
+    @task = Task.new(task_params)
+    @task.client = current_user  # Set the client to the current user
+
+    if @task.save
+      redirect_to @task, notice: 'Task was successfully created.'
+    else
+      render :new
     end
   end
-  
+
+  def edit
+  end
+
+  def update
+    if @task.update(task_params)
+      redirect_to @task, notice: 'Task was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @task.destroy
+    redirect_to tasks_url, notice: 'Task was successfully destroyed.'
+  end
+
+  def accept
+    if current_user.freelancer? && @task.open?
+      @task.update(freelancer: current_user, status: :in_progress)
+      redirect_to @task, notice: 'Task has been accepted!'
+    else
+      redirect_to @task, alert: 'You cannot accept this task!'
+    end
+  end
+
+  def complete
+    if @task.update(completed_file: params[:completed_file], status: "completed")
+      redirect_to @task, notice: 'Task was successfully completed.'
+    else
+      render :show, alert: 'Unable to complete task.'
+    end
+  end
+
+  def changes
+    if current_user == @task.client && @task.completed?
+      # Example logic: update the task's status to 'changes_requested'
+      @task.update(status: 'changes_requested')
+
+      # Redirect to the task's show page with a notice
+      redirect_to @task, notice: 'Change request has been sent to the freelancer.'
+    else
+      # Redirect with an error message if the user is not authorized to request changes
+      redirect_to @task, alert: 'You are not authorized to request changes for this task.'
+    end
+  end
+
+  private
+
+  def set_task
+    @task = Task.find(params[:id])
+  end
+
+  def task_params
+    params.require(:task).permit(:title, :description, :budget, :deadline, :category, :status, :client_id, :freelancer_id, :completed_file)
+  end
+end
