@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy, :complete, :request_changes]
+  before_action :set_task, only: [:show, :edit, :update, :destroy, :complete, :changes]
 
   def index
     @tasks = Task.all
@@ -58,13 +58,9 @@ class TasksController < ApplicationController
 
   def changes
     if current_user == @task.client && @task.completed?
-      # Example logic: update the task's status to 'changes_requested'
       @task.update(status: 'changes_requested')
-
-      # Redirect to the task's show page with a notice
       redirect_to @task, notice: 'Change request has been sent to the freelancer.'
     else
-      # Redirect with an error message if the user is not authorized to request changes
       redirect_to @task, alert: 'You are not authorized to request changes for this task.'
     end
   end
