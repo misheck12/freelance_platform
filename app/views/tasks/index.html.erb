@@ -10,6 +10,7 @@
       Budget: <%= task.budget %><br>
       Deadline: <%= task.deadline %><br>
       <%= link_to 'Edit', edit_task_path(task) %> |
+      <%= link_to 'Delete', task, method: :delete, data: { confirm: 'Are you sure?' } %>
     </li>
   <% end %>
 </ul>
