@@ -6,6 +6,9 @@ gem 'devise'
 gem 'pundit'
 gem 'cssbundling-rails'
 gem 'sassc-rails'
+gem 'bootstrap', '~> 5.3.0'
+gem 'fontawesome5-rails'
+
 
 
 
