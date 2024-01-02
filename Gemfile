@@ -5,8 +5,8 @@ ruby "3.2.2"
 gem 'devise'
 gem 'pundit'
 gem 'cssbundling-rails'
-gem 'sassc-rails'
-gem 'bootstrap', '~> 5.3.0'
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'sass-rails', '>= 3.2'
 gem 'fontawesome5-rails'
 
 
