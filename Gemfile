@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.2"
 gem 'devise'
 gem 'pundit'
-gem 'cssbundling-rails'
+gem 'sassc-rails'
 gem 'bootstrap', '~> 5.3.0'
 gem 'fontawesome5-rails'
 
