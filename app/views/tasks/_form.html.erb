@@ -63,6 +63,19 @@
       </div>
     </div>
   </div>
+
+  <div class="actions">
+    <% if task.new_record? %>
+      <%= form.submit 'Create Task', class: 'btn btn-primary btn-block' %>
+    <% else %>
+      <% if task.freelancer_id.nil? %>
+        <%= link_to 'Accept Task', accept_task_path(task), method: :post, class: 'btn btn-success btn-block' %>
+        <%= link_to 'Reject Task', reject_task_path(task), method: :post, class: 'btn btn-danger btn-block' %>
+      <% elsif task.freelancer_id == current_user.id && task.status == 'accepted' %>
+        <%= form.submit 'Mark as Complete', class: 'btn btn-success btn-block' %>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
 
 <script>
