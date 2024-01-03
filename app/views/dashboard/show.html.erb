@@ -1,43 +1,47 @@
 <div class="container py-5">
   <h3 class="mb-4 text-secondary">Welcome, <%= current_user.name %>!</h3>
 
-  <div class="board">
   <% if current_user.admin? %>
     <div class="card shadow mb-4 animated">
       <div class="card-header bg-secondary text-white">
         Admin Dashboard
       </div>
-
-      <% if @pending_payments.present? %>
-        <h3>Pending Payments</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Task Title</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Transaction ID</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @pending_payments.each do |payment| %>
-              <tr>
-                <th scope="row"><%= payment.id %></th>
-                <td><%= payment.task.title %></td>
-                <td><%= number_to_currency(payment.task.budget) %></td>
-                <td><%= payment.transaction_id %></td>
-                <td>
-                  <%= link_to 'Accept', accept_task_payment_path(payment.task, payment), method: :patch, class: 'btn btn-success' %>
-                  <%= link_to 'Reject', reject_task_payment_path(payment.task, payment), method: :patch, class: 'btn btn-danger' %>
-                </td>
-              </tr>
+<% if @pending_payments.present? %>
+  <h3>Pending Payments</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Task Title</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Transaction ID</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @pending_payments.each do |payment| %>
+        <tr>
+          <th scope="row"><%= payment.id %></th>
+          <td><%= payment.task.title %></td>
+          <td><%= number_to_currency(payment.task.budget) %></td>
+          <td><%= payment.transaction_id %></td>
+          <td>
+            <%= form_with url: accept_task_payment_path(payment.task, payment), method: :patch do %>
+              <%= submit_tag 'Accept', class: 'btn btn-success' %>
             <% end %>
-          </tbody>
-        </table>
-      <% else %>
-        <p>No pending payments at this time.</p>
+
+            <%= form_with url: reject_task_payment_path(payment.task, payment), method: :patch do %>
+              <%= submit_tag 'Reject', class: 'btn btn-danger' %>
+            <% end %>
+
+          </td>
+        </tr>
       <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No pending payments at this time.</p>
+<% end %>
 
       <div class="card-body">
         <ul class="list-unstyled">
@@ -104,8 +108,6 @@
       </table>
       <%= link_to 'Create New User', new_freelancer_registration_path, class: 'btn btn-primary' %>
     </div>
-  <% end %>
-
 
    <% elsif current_user.client? %>
     <!-- Client Dashboard Content -->
