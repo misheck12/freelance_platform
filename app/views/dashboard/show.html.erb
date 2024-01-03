@@ -7,35 +7,41 @@
         Admin Dashboard
       </div>
 <% if @pending_payments.present? %>
-        <h3>Pending Payments</h3>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Task Title</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Transaction ID</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @pending_payments.each do |payment| %>
-              <tr>
-                <th scope="row"><%= payment.id %></th>
-                <td><%= payment.task.title %></td>
-                <td><%= number_to_currency(payment.task.budget) %></td>
-                <td><%= payment.transaction_id %></td>
-                <td>
-                  <%= link_to 'Accept', accept_task_payment_path(payment.task, payment), method: :patch, class: 'btn btn-success' %>
-                  <%= link_to 'Reject', reject_task_payment_path(payment.task, payment), method: :patch, class: 'btn btn-danger' %>
-                </td>
-              </tr>
+  <h3>Pending Payments</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Task Title</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Transaction ID</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @pending_payments.each do |payment| %>
+        <tr>
+          <th scope="row"><%= payment.id %></th>
+          <td><%= payment.task.title %></td>
+          <td><%= number_to_currency(payment.task.budget) %></td>
+          <td><%= payment.transaction_id %></td>
+          <td>
+            <%= form_with url: accept_task_payment_path(payment.task, payment), method: :patch do %>
+              <%= submit_tag 'Accept', class: 'btn btn-success' %>
             <% end %>
-          </tbody>
-        </table>
-      <% else %>
-        <p>No pending payments at this time.</p>
+
+            <%= form_with url: reject_task_payment_path(payment.task, payment), method: :patch do %>
+              <%= submit_tag 'Reject', class: 'btn btn-danger' %>
+            <% end %>
+
+          </td>
+        </tr>
       <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No pending payments at this time.</p>
+<% end %>
 
       <div class="card-body">
         <ul class="list-unstyled">
@@ -105,6 +111,9 @@
 
    <% elsif current_user.client? %>
     <!-- Client Dashboard Content -->
+<div class="container py-5">
+  <h3 class="mb-4 text-secondary">Welcome, <%= current_user.email %>!</h3>
+
   <div class="card shadow mb-4 animated fadeIn">
     <div class="card-header py-3 bg-dark text-white">
       <h6 class="m-0 font-weight-bold">Client Dashboard</h6>
@@ -190,6 +199,7 @@
       <% end %>
     </ul>
   </div>
+</div>
 
 
 
@@ -350,4 +360,21 @@
 
 </div>
   <% end %>
+
+  <style>
+    /* Simple fade-in animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .animated {
+      animation-name: fadeIn;
+      animation-duration: 1.5s;
+    }
+  </style>
 </div>
