@@ -78,3 +78,5 @@ group :test do
   gem "selenium-webdriver"
 
 end
+
+gem "cssbundling-rails", "~> 1.3"
