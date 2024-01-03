@@ -1,3 +1,4 @@
+
 import "@hotwired/turbo-rails"
 import "controllers" // if you have Stimulus controllers you want to import
 import * as Bootstrap from "bootstrap"
