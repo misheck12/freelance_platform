@@ -3,8 +3,20 @@
 <%= render @payment %>
 
 <div>
-  <%= link_to "Edit this payment", edit_payment_path(@payment) %> |
-  <%= link_to "Back to payments", payments_path %>
+  <% if current_user.admin? %>
+    <%= link_to "Edit this payment", edit_payment_path(@payment) %> |
+    <%= link_to "Back to payments", payments_path %>
+    <%= button_to "Destroy this payment", @payment, method: :delete %>
+  <% elsif current_user.client? %>
+    <%= link_to "Back to payments", payments_path %>
+  <% end %>
 
-  <%= button_to "Destroy this payment", @payment, method: :delete %>
+  <% if current_user.admin? %>
+    <!-- Display Accept and Reject buttons for admin -->
+    <%= button_to "Accept", accept_payment_path(@payment), method: :patch, class: 'btn btn-success' %>
+    <%= button_to "Reject", reject_payment_path(@payment), method: :patch, class: 'btn btn-danger' %>
+  <% elsif current_user.client? %>
+    <!-- Display Edit button for client -->
+    <%= link_to "Edit this payment", edit_payment_path(@payment) %>
+  <% end %>
 </div>
