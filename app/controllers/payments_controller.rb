@@ -10,6 +10,7 @@ class PaymentsController < ApplicationController
   def show
     @payment = Payment.find_by(id: params[:id])
     if @payment.nil?
+      redirect_to root_path, alert: 'payment not found'
     end
 
   def create
