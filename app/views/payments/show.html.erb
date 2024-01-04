@@ -1,7 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
 <%= render @payment %>
-      <%= image_tag @payment.payment_proof.url, alt: 'Payment Receipt' if @payment.payment_proof? %>
 
 <div>
   <% if current_user.admin? %>
