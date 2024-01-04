@@ -15,38 +15,45 @@
       </p>
 
       <% if current_user == @task.client %>
-  <% if @task.completed? %>
-    <% if @task.completed_file.attached? %>
-      <p>Completed file: <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment"), class: 'btn btn-link' %></p>
-    <% end %>
-    <% unless @task.reviewed? %>
-      <%= link_to 'Give a Review', new_task_review_path(@task), class: 'btn btn-primary' %>
-    <% end %>
-    <% unless @task.reviewed? %>
-      <%= form_with url: changes_task_path(@task), method: :post do |form| %>
-        <%= form.submit 'Request Changes', class: 'btn btn-warning' %>
+        <% if @task.completed? %>
+          <% if @task.completed_file.attached? %>
+            <p>Completed file: <%= link_to @task.completed_file.filename, rails_blob_path(@task.completed_file, disposition: "attachment"), class: 'btn btn-link' %></p>
+          <% end %>
+          <% unless @task.reviewed? %>
+            <%= link_to 'Give a Review', new_task_review_path(@task), class: 'btn btn-primary' %>
+          <% end %>
+          <% unless @task.reviewed? %>
+            <%= form_with url: changes_task_path(@task), method: :post do |form| %>
+              <%= form.submit 'Request Changes', class: 'btn btn-warning' %>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %>
+        <% end %>
+      <% elsif current_user.freelancer? %>
+        <% if @task.open? %>
+          <%= form_with url: accept_task_path(@task), method: :post do %>
+            <%= submit_tag 'Accept', class: 'btn btn-primary' %>
+          <% end %>
+        <% elsif @task.status == 'changes_requested' && @task.freelancer == current_user %>
+          <%= form_with url: submit_changes_task_path(@task), method: :post, html: { multipart: true } do |form| %>
+            <%= form.file_field :revised_file, class: 'form-control-file' %>
+            <%= form.submit 'Submit Changes', class: 'btn btn-primary mt-2' %>
+          <% end %>
+        <% elsif @task.in_progress? && @task.freelancer == current_user %>
+          <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
+            <%= form.file_field :completed_file, class: 'form-control-file' %>
+            <%= form.submit 'Submit Task', class: 'btn btn-primary mt-2' %>
+          <% end %>
+        <% end %>
       <% end %>
-    <% end %>
-  <% else %>
-    <%= link_to 'Edit', edit_task_path(@task), class: 'btn btn-secondary' %>
-  <% end %>
-<% elsif current_user.freelancer? %>
-  <% if @task.open? %>
-    <%= form_with url: accept_task_path(@task), method: :post do %>
-      <%= submit_tag 'Accept', class: 'btn btn-primary' %>
-    <% end %>
-  <% elsif @task.status == 'changes_requested' && @task.freelancer == current_user %>
-    <%= form_with url: submit_changes_task_path(@task), method: :post, html: { multipart: true } do |form| %>
-      <%= form.file_field :revised_file, class: 'form-control-file' %>
-      <%= form.submit 'Submit Changes', class: 'btn btn-primary mt-2' %>
-    <% end %>
-  <% elsif @task.in_progress? && @task.freelancer == current_user %>
-    <%= form_with url: complete_task_path(@task), method: :post, html: { multipart: true } do |form| %>
-      <%= form.file_field :completed_file, class: 'form-control-file' %>
-      <%= form.submit 'Submit Task', class: 'btn btn-primary mt-2' %>
-    <% end %>
-  <% end %>
-<% end %>
+
+      <%# Task Deletion Option for Admin and Client %>
+      <% if current_user == @task.client || current_user.admin? %>
+        <%= link_to 'Delete Task', task_path(@task), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger mt-2' %>
+      <% end %>
+
+      <%= link_to 'Back', dashboard_show_path, class: 'btn btn-secondary mt-2' %>
     </div>
   </div>
 </div>
