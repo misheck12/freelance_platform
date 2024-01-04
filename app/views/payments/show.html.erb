@@ -3,7 +3,9 @@
 <%= render @payment %>
 
 <div>
-  <%= link_to "Edit this payment", edit_payment_path(@payment) %> |
+<% if client? %>
+  <%= link_to "Edit this payment", edit_payment_path(@payment) %>
+<% end %>
   <%= link_to "Back to payments", payments_path %>
 
   <%= button_to "Destroy this payment", @payment, method: :delete %>
