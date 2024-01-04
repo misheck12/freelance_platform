@@ -4,11 +4,9 @@
 
 <div>
   <% if current_user.admin? %>
-    <%= link_to "Edit this payment", edit_payment_path(@payment) %> |
-    <%= link_to "Back to payments", payments_path %>
-    <%= button_to "Destroy this payment", @payment, method: :delete %>
+    <%= link_to "Back", root_path %>
   <% elsif current_user.client? %>
-    <%= link_to "Back to payments", payments_path %>
+    <%= link_to "Back", root_path %>
     <%= link_to "Edit this payment", edit_payment_path(@payment) %>
   <% end %>
 
