@@ -1,13 +1,11 @@
 <div class="task-details">
-  <h1 class="display-4"><%= @task.title %></h1>
-
   <div class="card">
     <div class="card-body">
       <p class="card-text">
         </p>
 
       <% if current_user.admin? %>
-        <%= link_to "Approve Task", approve_task_path(@task), method: :patch, class: "btn btn-success" %>
+        <%= link_to "Approve Task", accept_task_path(@task), method: :patch, class: "btn btn-success" %>
         <%= link_to "Reject Task", reject_task_path(@task), method: :patch, class: "btn btn-danger" %>
       <% end %>
 
