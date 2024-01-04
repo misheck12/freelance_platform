@@ -12,6 +12,7 @@ class PaymentsController < ApplicationController
     if @payment.nil?
       redirect_to root_path, alert: 'payment not found'
     end
+  end # <--- add this end
 
   def create
     @payment = @task.build_payment(payment_params)  # Use build_payment for has_one association
