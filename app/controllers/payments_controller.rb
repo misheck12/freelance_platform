@@ -7,6 +7,14 @@ class PaymentsController < ApplicationController
     @payment = Payment.new
   end
 
+  def show
+    @payment = Payment.find_by(id: params[:id])
+    if @payment.nil?
+      redirect_to root_path, alert: 'Payment not found'
+    end
+  end
+  
+
   def create
     @payment = @task.build_payment(payment_params)  # Use build_payment for has_one association
     @payment.user = current_user
