@@ -15,7 +15,7 @@ class PaymentsController < ApplicationController
   end # Add an end keyword here
 
   def create
-    @payment = @task.create_payment(payment_params)  # Use create_payment for has_one association
+    @payment = @task.build_payment(payment_params)
     @payment.user = current_user
     @payment.status = :pending  # Assuming the status enum includes pending
 
