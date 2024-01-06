@@ -6,9 +6,40 @@
       <div class="card-header bg-secondary text-white">
         Admin Dashboard
       </div>
+<% if @pending_payments.present? %>
+  <h3>Pending Payments</h3>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Task Title</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Transaction ID</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @pending_payments.each do |payment| %>
+          <tr>
+            <th scope="row"><%= payment.id %></th>
+            <td><%= payment.task.title %></td>
+            <td><%= number_to_currency(payment.task.budget) %></td>
+            <td><%= payment.transaction_id %></td>
+            <td>
+            <%= link_to 'View', task_payment_path(payment.task_id, payment.id), class: 'btn btn-primary' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+<% else %>
+  <p>No pending payments at this time.</p>
+<% end %>
 
-<!-- Accepted Payments Section -->
-    <% if @accepted_payments.present? %>
+   <!-- Accepted Payments Section -->
+    <% accepted_payments = Payment.where(status: 'approved') %>
+    <% if accepted_payments.present? %>
       <h3>Accepted Payments</h3>
       <div class="table-responsive">
         <table class="table table-striped">
@@ -23,7 +54,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @accepted_payments.each do |payment| %>
+            <% accepted_payments.each do |payment| %>
               <tr>
                 <th scope="row"><%= payment.id %></th>
                 <td><%= payment.task.title %></td>
@@ -41,7 +72,8 @@
     <% end %>
 
     <!-- Rejected Payments Section -->
-    <% if @rejected_payments.present? %>
+    <% rejected_payments = Payment.where(status: 'rejected') %>
+    <% if rejected_payments.present? %>
       <h3>Rejected Payments</h3>
       <div class="table-responsive">
         <table class="table table-striped">
@@ -56,7 +88,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @rejected_payments.each do |payment| %>
+            <% rejected_payments.each do |payment| %>
               <tr>
                 <th scope="row"><%= payment.id %></th>
                 <td><%= payment.task.title %></td>
@@ -73,34 +105,6 @@
       <p>No rejected payments at this time.</p>
     <% end %>
 
-    <!-- Completed Tasks Section -->
-    <% if @completed_tasks.present? %>
-      <h3>Completed Tasks</h3>
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Task Title</th>
-              <th scope="col">Freelancer</th>
-              <th scope="col">User</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @completed_tasks.each do |task| %>
-              <tr>
-                <th scope="row"><%= task.id %></th>
-                <td><%= task.title %></td>
-                <td><%= task.freelancer.name %></td>
-                <td><%= task.client.email %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    <% else %>
-      <p>No completed tasks at this time.</p>
-    <% end %>
       <div class="card-body">
         <ul class="list-unstyled">
           <li>Total Tasks: <span class="badge bg-light text-secondary"><%= Task.count %></span></li>
