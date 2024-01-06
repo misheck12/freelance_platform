@@ -26,6 +26,10 @@ class User < ApplicationRecord
     tasks_as_freelancer.where(status: 'changes_requested')
   end
 
+  def total_earning
+    payments.where(status: 'approved').sum(:amount)
+  end
+
 
   private
 
