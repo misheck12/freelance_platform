@@ -7,19 +7,12 @@ class PaymentsController < ApplicationController
     @payment = Payment.new
   end
 
-  def show
-    @payment = Payment.find_by(id: params[:id])
-    if @payment.nil?
-      redirect_to root_path, alert: 'payment unsussful'
-    end
-  end # Add an end keyword here
-
   def create
-    @payment = @task.build_payment(payment_params)
+    @payment = @task.build_payment(payment_params)  # Use build_payment for has_one association
     @payment.user = current_user
     @payment.status = :pending  # Assuming the status enum includes pending
 
-    if @payment.persisted? # Check if the payment was saved
+    if @payment.save
       redirect_to task_path(@task), notice: 'Payment was successfully submitted and is pending approval.'
     else
       render :new
@@ -55,5 +48,4 @@ class PaymentsController < ApplicationController
   def payment_params
     params.require(:payment).permit(:transaction_id, :payment_proof)
   end
-# Remove the extra end keyword here
 end
