@@ -29,7 +29,9 @@ class Task < ApplicationRecord
     reviews.exists?
   end
 
-
+  def self.total_earning_for_freelancer (user_id)
+  joins(:payment).where(user_id: user_id, payments: {status: :approved}).sum(:budget)
+  end
 
   private
 
