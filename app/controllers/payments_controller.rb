@@ -1,15 +1,22 @@
 class PaymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_task, only: [:new, :create]
-  before_action :set_payment, only: [:show, :accept, :reject]
+  before_action :set_payment, only: [:accept, :reject]
 
   def new
     @payment = Payment.new
   end
 
+  def show
+    @payment = Payment.find_by(id: params[:id])
+    if @payment.nil?
+      redirect_to root_path, alert: 'payment '
+    end
+
   def create
-    @payment = @task.build_payment(payment_params)
-    set_payment_user_and_status
+    @payment = @task.build_payment(payment_params)  # Use build_payment for has_one association
+    @payment.user = current_user
+    @payment.status = :pending  # Assuming the status enum includes pending
 
     if @payment.save
       redirect_to task_path(@task), notice: 'Payment was successfully submitted and is pending approval.'
@@ -18,20 +25,20 @@ class PaymentsController < ApplicationController
     end
   end
 
-  def show
-    if @payment.nil?
-      redirect_to root_path, alert: 'Payment not found'
+  def accept
+    if @payment.update(status: :approved)
+      redirect_to dashboard_path, notice: 'Payment was successfully approved.'
     else
-      set_payment_user_and_status
+      redirect_to dashboard_path, alert: 'Payment could not be approved.'
     end
   end
 
-  def accept
-    authorize_payment_action(:accept, :approved)
-  end
-
   def reject
-    authorize_payment_action(:reject, :rejected)
+    if @payment.update(status: :rejected)
+      redirect_to dashboard_path, notice: 'Payment was successfully rejected.'
+    else
+      redirect_to dashboard_path, alert: 'Payment could not be rejected.'
+    end
   end
 
   private
@@ -46,20 +53,5 @@ class PaymentsController < ApplicationController
 
   def payment_params
     params.require(:payment).permit(:transaction_id, :payment_proof)
-  end
-
-  def set_payment_user_and_status
-    @payment.user = current_user
-    @payment.client_id = current_user.id if current_user.client?
-    @payment.freelancer_id = current_user.id if current_user.freelancer?
-    @payment.status = :pending  # Assuming the status enum includes pending
-  end
-
-  def authorize_payment_action(action, status)
-    if @payment.update(status: status)
-      redirect_to dashboard_path, notice: "Payment was successfully #{action.to_s.humanize}."
-    else
-      redirect_to dashboard_path, alert: "Payment could not be #{action.to_s.humanize.downcase}."
-    end
   end
 end
