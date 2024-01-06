@@ -10,7 +10,7 @@
     </div>
   <% end %>
 
-   <%= form.hidden_field :user_id, value: current_user.id %>
+  <%= form.hidden_field :user_id, value: current_user.id %>
 
   <div class="field">
     <%= form.label :transaction_id %>
@@ -21,6 +21,14 @@
     <%= form.label :payment_proof, "Upload Payment Screenshot" %>
     <%= form.file_field :payment_proof, class: 'form-control' %>
   </div>
+
+  <% if current_user.client? %>
+    <!-- Additional fields for clients, if needed -->
+  <% elsif current_user.freelancer? %>
+    <!-- Additional fields for freelancers, if needed -->
+  <% elsif current_user.admin? %>
+    <!-- Additional fields for admins, if needed -->
+  <% end %>
 
   <%= form.submit "Submit Payment", class: 'btn btn-primary' %>
 <% end %>
