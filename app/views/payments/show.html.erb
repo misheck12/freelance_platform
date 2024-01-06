@@ -11,11 +11,9 @@
   <% end %>
 
   <% if current_user.admin? %>
-    <!-- Display Accept and Reject buttons for admin -->
     <%= button_to "Accept", accept_task_payment_path(@payment), method: :patch, class: 'btn btn-success' %>
     <%= button_to "Reject", reject_task_payment_path(@payment), method: :patch, class: 'btn btn-danger' %>
   <% elsif current_user.client? %>
-    <!-- Display Edit button for client -->
     <%= link_to "Edit this payment", edit_payment_path(@payment) %>
   <% end %>
 </div>
