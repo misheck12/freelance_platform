@@ -25,9 +25,13 @@
       <!-- Display associated client details -->
       <h2 class="display-5 mt-4">Client Information</h2>
       <p class="card-text">
-        <strong>Name:</strong> <%= @payment.client.name %><br>
-        <strong>Email:</strong> <%= @payment.client.email %><br>
-        <!-- Add more client details as needed -->
+        <% if @payment.client.present? %>
+          <strong>Name:</strong> <%= @payment.client.name %><br>
+          <strong>Email:</strong> <%= @payment.client.email %><br>
+          <!-- Add more client details as needed -->
+        <% else %>
+          <strong>No associated client information.</strong>
+        <% end %>
       </p>
 
       <!-- Display payment proof if attached -->
