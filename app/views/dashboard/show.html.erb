@@ -275,7 +275,7 @@
   </div>
   <div class="card-body">
     <p>Your total earning as a freelancer:</p>
-  <h2><%= number_to_currency(unit:"ZMK",Task.total_earning_for_freelancer(current_user.id).pluck(:budget).sum.to_f * 0.8) %></h2>
+<h2><%= number_to_currency(Task.total_earning_for_freelancer(current_user.id).pluck(:budget).sum.to_f * 0.8) %></h2>
   </div>
 </div>
 
