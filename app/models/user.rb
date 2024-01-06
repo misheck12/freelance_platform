@@ -26,6 +26,11 @@ class User < ApplicationRecord
     tasks_as_freelancer.where(status: 'changes_requested')
   end
 
+ # Calculate total earnings for the freelancer based on approved payments
+ def self.total_earning_for_freelancer(freelancer_id)
+    approved_payments = where(status: 'approved').joins(:task).where(tasks: { freelancer_id: freelancer_id })
+    approved_payments.sum('tasks.budget')
+ end
 
   private
 
