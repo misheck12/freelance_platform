@@ -269,15 +269,16 @@
     <!-- Freelancer Dashboard Content -->
     <div class="freelancer-dashboard">
     <!-- Total Earning Section -->
-  <div class="card shadow mb-4 animated fadeIn">
+<div class="card shadow mb-4 animated fadeIn">
   <div class="card-header bg-success text-white">
     <h6 class="m-0 font-weight-bold">Total Earning</h6>
   </div>
   <div class="card-body">
     <p>Your total earning as a freelancer:</p>
-    <h2><%= number_to_currency(current_user.total_earning_for_freelancer(current_user.id)) %></h2>
+    <h2><%= number_to_currency(total_earning_for_freelancer(current_user.id)) %></h2>
   </div>
 </div>
+
 
   </div>
 
