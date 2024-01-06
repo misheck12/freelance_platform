@@ -20,16 +20,6 @@
         <!-- Add more task details as needed -->
       </p>
 
-      <!-- Display associated client details -->
-      <h2 class="display-5 mt-4">Client Information</h2>
-      <% if @payment.client.present? %>
-        <p class="card-text">
-          <strong>Name:</strong> <%= @payment.client.name %><br>
-          <strong>Email:</strong> <%= @payment.client.email %><br>
-          <!-- Add more client details as needed -->
-        </p>
-      <% end %>
-
       <!-- Display payment proof if attached -->
       <% if @payment.payment_proof.attached? %>
         <h2 class="display-5 mt-4">Payment Proof</h2>
