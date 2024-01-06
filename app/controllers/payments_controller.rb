@@ -15,18 +15,23 @@ class PaymentsController < ApplicationController
   end # <--- add this end
 
   def create
-    @payment = @task.build_payment(payment_params)  # Use build_payment for has_one association
+    @payment = @task.build_payment(payment_params)
     @payment.user = current_user
-    @payment.status = :pending  # Assuming the status enum includes pending
-    @payment.client_id = @task.client_id if @task.client_id.present?
-
-
+    @payment.status = :pending
+  
+    # Set the client_id based on the user's role
+    if current_user.client?
+      @payment.client_id = current_user.id
+    elsif current_user.freelancer? && @task.client_id.present?
+      @payment.client_id = @task.client_id
+    end
+  
     if @payment.save
       redirect_to task_path(@task), notice: 'Payment was successfully submitted and is pending approval.'
     else
       render :new
     end
-  end
+  end  
 
   def accept
     if @payment.update(status: :approved)
