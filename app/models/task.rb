@@ -31,4 +31,9 @@ class Task < ApplicationRecord
   def set_default_status
     self.status ||= :open
   end
+
+  def reviewed?
+    reviews.exists?
+  end
+
 end
