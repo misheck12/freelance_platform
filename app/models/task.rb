@@ -25,15 +25,15 @@ class Task < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_one :payment, dependent: :destroy
 
+  def reviewed?
+    reviews.exists?
+  end
+
+
 
   private
 
   def set_default_status
     self.status ||= :open
   end
-
-  def reviewed?
-    reviews.exists?
-  end
-
 end
