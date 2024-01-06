@@ -30,7 +30,8 @@ class Task < ApplicationRecord
   end
 
   def self.total_earning_for_freelancer (user_id)
-  joins(:payment).where(user_id: user_id, payments: {status: :approved}).sum(:budget)
+  joins(:payment).where(freelancer_id: user_id, payments: {status: :approved})
+
   end
 
   private
