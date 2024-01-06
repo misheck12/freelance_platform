@@ -11,6 +11,7 @@ class PaymentsController < ApplicationController
     @payment = Payment.find_by(id: params[:id])
     if @payment.nil?
       redirect_to root_path, alert: 'payment unsussful'
+    end
 
   def create
     @payment = @task.build_payment(payment_params)  # Use build_payment for has_one association
