@@ -27,7 +27,7 @@ class User < ApplicationRecord
   end
 
   def total_earning
-    payments.where(status: 'approved').sum(:budget)
+    tasks.where(status: 'approved').sum(:budget)
   end
 
 
