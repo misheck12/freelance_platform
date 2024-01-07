@@ -15,7 +15,7 @@
       <p class="card-text">
         <strong>Title:</strong> <%= @payment.task.title %><br>
         <strong>Description:</strong> <%= @payment.task.description %><br>
-        <strong>Budget:</strong> <%= number_to_currency(@payment.task.budget) %><br>
+        <strong>Budget:</strong> <%= humanized_money_with_symbol(@payment.task.budget) %><br>
         <strong>Deadline:</strong> <%= @payment.task.deadline.strftime("%B %d, %Y") %><br>
         <!-- Add more task details as needed -->
       </p>

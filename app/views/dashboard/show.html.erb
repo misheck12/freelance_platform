@@ -24,7 +24,7 @@
           <tr>
             <th scope="row"><%= payment.id %></th>
             <td><%= payment.task.title %></td>
-            <td><%= number_to_currency(payment.task.budget) %></td>
+            <td><%= humanized_money_with_symbol(payment.task.budget) %></td>
             <td><%= payment.transaction_id %></td>
             <td>
             <%= link_to 'View', task_payment_path(payment.task_id, payment.id), class: 'btn btn-primary' %>
@@ -58,7 +58,7 @@
               <tr>
                 <th scope="row"><%= payment.id %></th>
                 <td><%= payment.task.title %></td>
-                <td><%= number_to_currency(payment.task.budget) %></td>
+                <td><%= humanized_money_with_symbol(payment.task.budget) %></td>
                 <td><%= payment.transaction_id %></td>
                 <td><%= payment.task.freelancer.name %></td>
                 <td><%= payment.task.client.email %></td>
@@ -92,7 +92,7 @@
               <tr>
                 <th scope="row"><%= payment.id %></th>
                 <td><%= payment.task.title %></td>
-                <td><%= number_to_currency(payment.task.budget) %></td>
+                <td><%= humanized_money_with_symbol(payment.task.budget) %></td>
                 <td><%= payment.transaction_id %></td>
                 <td><%= payment.task.freelancer.name %></td>
                 <td><%= payment.task.client.email %></td>
@@ -215,7 +215,7 @@
                   <tr>
                     <td><%= link_to task.title, task_path(task), class: 'text-primary' %></td>
                     <td><%= task.description %></td>
-                    <td><%= number_to_currency(task.budget) %></td>
+                    <td><%= humanized_money_with_symbol(task.budget) %></td>
                     <td><%= task.category %></td>
                     <td><%= task.deadline.strftime('%b %d, %Y') %></td>
                     <td><span class="badge <%= badge_color_for_status(task.status) %>"><%= task.status.titleize %></span></td>
@@ -306,7 +306,7 @@
               <tr>
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
-                <td><%= number_to_currency(task.budget * 0.80) %></td>
+                <td><%= humanized_money_with_symbol(task.budget * 0.80) %></td>
                 <td><%= task.category %></td>
                 <td><%= l(task.deadline, format: :short) %></td>
                 <td><%= task.status %></td>
@@ -341,7 +341,7 @@
               <tr>
                 <td><%= link_to task.title, task_path(task) %></td>
                 <td><%= task.description %></td>
-                <td><%= number_to_currency(task.budget * 0.80) %></td>
+                <td><%= humanized_money_with_symbol(task.budget * 0.80) %></td>
                 <td><%= task.category %></td>
                 <td><%= l(task.deadline, format: :short) %></td>
                 <td><%= task.status %></td>
@@ -378,7 +378,7 @@
                 <tr>
                   <td><%= link_to task.title, task_path(task) %></td>
                   <td><%= task.description %></td>
-                  <td><%= number_to_currency(task.budget * 0.80) %></td>
+                  <td><%= humanized_money_with_symbol(task.budget * 0.80) %></td>
                   <td><%= task.category %></td>
                   <td><%= l(task.deadline, format: :short) %></td>
                   <td><span class="badge badge-warning"><%= task.status %></span></td>
