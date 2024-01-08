@@ -8,7 +8,7 @@ gem 'sassc-rails'
 gem 'bootstrap', '~> 5.3.0'
 gem 'fontawesome5-rails'
 gem 'money-rails', '~> 1.12'
-
+gem 'dotenv-rails', groups: [:development, :test]
 
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
