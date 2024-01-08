@@ -1,0 +1,26 @@
+<%= form_with(model: [task, payment], local: true) do |form| %>
+  <% if payment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(payment.errors.count, "error") %> prohibited this payment from being saved:</h2>
+      <ul>
+        <% payment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <%= form.hidden_field :user_id, value: current_user.id %>
+
+  <div class="field">
+    <%= form.label :transaction_id %>
+    <%= form.text_field :transaction_id, class: 'form-control', placeholder: 'Enter your transaction ID' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :payment_proof, "Upload Payment Screenshot" %>
+    <%= form.file_field :payment_proof, class: 'form-control' %>
+  </div>
+
+  <%= form.submit "Submit Payment", class: 'btn btn-primary' %>
+<% end %>
