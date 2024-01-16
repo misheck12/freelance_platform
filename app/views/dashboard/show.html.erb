@@ -274,7 +274,7 @@
     <h6 class="m-0 font-weight-bold">Total Earning</h6>
   </div>
   <div class="card-body">
-    <p>Your total earning:<%user.name%></p>
+    <p>Your total earning:<%current_user.email%></p>
 <h2><%= humanized_money_with_symbol(Task.total_earning_for_freelancer(current_user.id).pluck(:budget).sum.to_f * 0.8, symbol: "ZMK", position: :before) %></h2>
   </div>
 </div>
