@@ -213,7 +213,7 @@
               <tbody>
                 <% current_user.tasks_as_client.where(status: status).each do |task| %>
                   <tr>
-                    <td><%= link_to task.title, task_path(task), class: 'text-primary' %></td>
+                    <td><%= link_to task.title, task_path(task), class: 'btn-disabled text-primary' %></td>
                     <td><%= task.description %></td>
                     <td><%= humanized_money_with_symbol(task.budget) %></td>
                     <td><%= task.category %></td>
