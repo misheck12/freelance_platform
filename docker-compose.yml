@@ -1,21 +1,18 @@
-version: '3' 
-services: 
-  db: 
-   image: postgres:12 
-   volumes: 
-    - ./tmp/db:/var/lib/postgresql/data 
-   Environment:
-    - POSTGRES_USER=postgres 
-    - POSTGRES_PASSWORD=6474
-  web: 
-   build: 
-    context: . 
-    dockerfile: Dockerfile 
-   volumes: 
-    - .:/app 
-   ports: 
-    - '3000:3000' 
-   depends_on: 
-    - db 
-   Environment:
-      -DATABASE_URL=postgresql://your_postgres_user:your_postgres_password@db:5432/your_app_name
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: 6474
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/myapp
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
