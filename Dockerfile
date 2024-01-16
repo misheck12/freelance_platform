@@ -1,20 +1,28 @@
-FROM ruby:3.2.2
+# Use the official Ruby image as the base
+FROM ruby:3.0.2
 
-# Set the working directory in the container
-WORKDIR /usr/src/app
+# Install the required libraries and tools
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 
-# Install dependencies
-COPY Gemfile Gemfile.lock ./
+# Create and set the working directory
+RUN mkdir /myapp
+WORKDIR /myapp
+
+# Copy the Gemfile and install the gems
+COPY Gemfile /myapp/Gemfile
+COPY Gemfile.lock /myapp/Gemfile.lock
 RUN bundle install
 
-# Install Node.js for ExecJS runtime
-RUN apt-get update && apt-get install -y nodejs
+# Copy the rest of the app files
+COPY . /myapp
 
-# Add the rest of the application code
-ADD . /usr/src/app/
-
-# Expose port 3000
+# Expose the port that the app runs on
 EXPOSE 3000
 
+# Run the entrypoint script
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
 # Start the Rails server
-CMD ["rails", "s", "-b", "0.0.0.0"]
+CMD ["rails", "server", "-b", "0.0.0.0"]
