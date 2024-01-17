@@ -23,6 +23,8 @@ EXPOSE 3000
 # Run the entrypoint script
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
+RUN sed -i 's/\r$//' /usr/bin/entrypoint.sh
+RUN dos2unix /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 # Set the RAILS_ENV environment variable
