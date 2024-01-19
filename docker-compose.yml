@@ -13,7 +13,6 @@ services:
     environment:
       POSTGRES_PASSWORD: 6474
       POSTGRES_USER: postgres
-      POSTGRES_DB: Gighive
   web:
     build: ./Dockerfile
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
