@@ -2,17 +2,15 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: postgres
+  host: db
   username: <%= Rails.application.credentials.dig(:db, :username) %>
   password: <%= Rails.application.credentials.dig(:db, :password) %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: video_development
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
-
+  database: rails_7_with_docker_development
+  
 test:
   <<: *default
   database: video_test
