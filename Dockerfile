@@ -1,38 +1,19 @@
-# Make sure it matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.2.0
-FROM ruby:$RUBY_VERSION
+FROM ruby:3.0-bullseye as base
 
-# Install libvips for Active Storage preview support
-RUN apt-get update -qq && \
-    apt-get install -y build-essential libvips bash bash-completion libffi-dev tzdata postgresql nodejs npm yarn && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /usr/share/doc /usr/share/man
+RUN apt-get update -qq && apt-get install -y build-essential apt-utils libpq-dev nodejs
 
-# Rails app lives here
-WORKDIR /rails
+WORKDIR /docker/app
 
-# Set production environment
-ENV RAILS_LOG_TO_STDOUT="1" \
-    RAILS_SERVE_STATIC_FILES="true" \
-    RAILS_ENV="production" \
-    BUNDLE_WITHOUT="development"
+RUN gem install bundler
 
-# Install application gems
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile* ./
+
 RUN bundle install
 
-# Copy application code
-COPY . .
+ADD . /docker/app
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile --gemfile app/ lib/
+ARG DEFAULT_PORT 3000
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
+EXPOSE ${DEFAULT_PORT}
 
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/entrypoint"]
-
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
-CMD ["./bin/rails", "server"]
+CMD [ "bundle","exec", "puma", "config.ru"] # CMD ["rails","server"] # you can also write like this.
