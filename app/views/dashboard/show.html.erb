@@ -213,7 +213,7 @@
               <tbody>
                 <% current_user.tasks_as_client.where(status: status).each do |task| %>
                   <tr>
-                    <td><%= link_to task.title, task_path(task), class: 'text-primary' %></td>
+                    <td><%= content_tag :span, task.title, class: 'btn-disabled text-black' %></td>
                     <td><%= task.description %></td>
                     <td><%= humanized_money_with_symbol(task.budget) %></td>
                     <td><%= task.category %></td>
@@ -274,7 +274,7 @@
     <h6 class="m-0 font-weight-bold">Total Earning</h6>
   </div>
   <div class="card-body">
-    <p>Your total earning as a freelancer:</p>
+    <p>Your total earning:<%current_user.email%></p>
 <h2><%= humanized_money_with_symbol(Task.total_earning_for_freelancer(current_user.id).pluck(:budget).sum.to_f * 0.8, symbol: "ZMK", position: :before) %></h2>
   </div>
 </div>

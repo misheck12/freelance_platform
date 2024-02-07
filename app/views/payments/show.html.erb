@@ -5,6 +5,7 @@
     <div class="card-body">
       <p class="card-text">
         <strong>Transaction ID:</strong> <%= @payment.transaction_id %><br>
+        <strong>Network:</strong> <%= @payment.network%><br>
         <strong>Status:</strong> <%= @payment.status.capitalize %><br>
         <strong>Created At:</strong> <%= @payment.created_at.strftime("%B %d, %Y %H:%M:%S") %><br>
         <strong>Updated At:</strong> <%= @payment.updated_at.strftime("%B %d, %Y %H:%M:%S") %><br>

@@ -54,6 +54,6 @@ class PaymentsController < ApplicationController
   end
 
   def payment_params
-    params.require(:payment).permit(:transaction_id, :payment_proof)
+    params.require(:payment).permit(:transaction_id, :payment_proof, :network)
   end
 end

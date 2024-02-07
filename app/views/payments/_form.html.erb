@@ -12,6 +12,11 @@
 
    <%= form.hidden_field :user_id, value: current_user.id %>
 
+     <div class="field">
+    <%= form.label :network %>
+    <%= form.text_field :network, class: 'form-control', placeholder: 'MTN or Airtel Mobile money' %>
+  </div>
+
   <div class="field">
     <%= form.label :transaction_id %>
     <%= form.text_field :transaction_id, class: 'form-control', placeholder: 'Enter your transaction ID' %>
