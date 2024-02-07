@@ -8,6 +8,10 @@ gem 'sassc-rails'
 gem 'bootstrap', '~> 5.3.0'
 gem 'fontawesome5-rails'
 gem 'money-rails', '~> 1.12'
+gem 'capistrano', '~> 3.11'
+gem 'capistrano-rails', '~> 1.4'
+gem 'capistrano-passenger', '~> 0.2.0'
+gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.4'
 
 
 
