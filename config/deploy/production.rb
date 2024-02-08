@@ -1,5 +1,5 @@
 set :application, "Gighive"
-set :repo_url, "git@github.com:username/myapp.git"
+set :repo_url, "https://github.com/misheck12/freelance_platform.git"
 
 # Deploy to the user's home directory
 set :deploy_to, "/home/deploy/#{fetch :application}"
