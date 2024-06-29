@@ -41,4 +41,6 @@ Rails.application.routes.draw do
   resources :reviews, only: [:show, :edit, :update, :destroy]
 
   # Any additional routes can be added below
+  match '*path', to: -> (_env) { [204, { 'Content-Type' => 'text/plain' }, []] }, via: :options
+
 end
