@@ -7,7 +7,7 @@ gem 'pundit'
 gem 'sassc-rails'
 gem 'fontawesome5-rails'
 
-gem 'boo'
+gem 'bootstrap', '~> 5.3.0'
 
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
