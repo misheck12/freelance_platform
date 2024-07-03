@@ -3,5 +3,7 @@
 //= link_tree ../../../vendor/javascript .js
 //= link_tree ../builds
 //= link rails-ujs.js
-  //= link application.css
+//= link application.css
+//= link popper.js
+
 
